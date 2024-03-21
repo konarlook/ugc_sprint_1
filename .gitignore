@@ -1,0 +1,15 @@
+.git
+.idea
+logs
+
+.env
+venv
+venv*
+
+local.csv
+local.json
+local.txt
+local_code.py
+fastapi
+
+*.pem
