@@ -13,3 +13,4 @@ local_code.py
 fastapi
 
 *.pem
+/ugc/yandex/
