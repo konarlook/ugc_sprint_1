@@ -60,7 +60,6 @@ Rel(analyst, ugc_web_app,)
 
 Rel(ugc_web_app, events_db, "")
 Rel(ugc_web_app, ugc_db, "")
-Rel(movies_app, ugc_web_app, "Получение оценки фильма и отзывов")
 
 Rel(admin, ugc_web_app, "Удаление отзывов", "REST API")
 
