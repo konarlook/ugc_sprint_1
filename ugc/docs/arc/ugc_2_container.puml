@@ -19,6 +19,7 @@ System_Boundary(ugc_service, "UGC"){
     Container(give_events, "Write events")
     Container(delete_review, "Delete review")
     Container(update_review, "Update review")
+    Container(get_review, "Get review")
     }
     Container(sing_in, "Auth controller")
 }
