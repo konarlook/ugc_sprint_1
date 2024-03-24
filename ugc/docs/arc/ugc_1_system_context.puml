@@ -1,9 +1,14 @@
 @startuml system-context
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-Person(user, "User")
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
 Person(admin, "Admin")
+Person(analyst, "Analyst")
+Person(user, "User")
 Person_Ext(anonim, "Anonymous User")
+
 
 System_Boundary(admin_panel, "Admin_panel"){
     Container(web_app, "Admin_web_app")
@@ -27,17 +32,11 @@ System_Boundary(ugc_service, "UGC_service"){
     Container(ugc_web_app, "UGC Web App")
     ContainerDb(events_db, "Events database")
 }
-
-System_Boundary(infra_service, "Analytics Services"){
-
-
-}
-
 System_Ext(yandex_soc, "Yandex Social Network")
 
 
 Rel(web_app, movies_db, "Чтение и добавление фильмов", djangoORM)
-Rel(movies_db, etl_admin, "Чтение базы данных")
+Rel(etl_admin, movies_db, "Чтение базы данных")
 Rel(etl_admin, search_db, "Запись в поисковый движок")
 
 Rel(movies_app, cache_db, "Запись кэша в базу данных")
@@ -57,10 +56,11 @@ Rel(anonim, movies_app,)
 Rel(admin, web_auth,)
 Rel(admin, movies_app,)
 Rel(admin, web_app,)
+Rel(analyst, ugc_web_app,)
 
 Rel(ugc_web_app, events_db, "")
 Rel(ugc_web_app, ugc_db, "")
-Rel(ugc_web_app, web_app,)
+Rel(movies_app, ugc_web_app, "Получение оценки фильма и отзывов")
 
 Rel(admin, ugc_web_app, "Удаление отзывов", "REST API")
 
