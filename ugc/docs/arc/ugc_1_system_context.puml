@@ -1,0 +1,68 @@
+@startuml system-context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+Person(admin, "Admin")
+Person(analyst, "Analyst")
+Person(user, "User")
+Person_Ext(anonim, "Anonymous User")
+
+
+System_Boundary(admin_panel, "Admin_panel"){
+    Container(web_app, "Admin_web_app")
+    ContainerDb(movies_db, "Movies database")
+    Container(etl_admin, "ETL admin")
+}
+System_Boundary(auth_service, "Auth_service"){
+    ContainerDb(cache_auth_db, "Auth_Cache_DB")
+    ContainerDb(user_auth_db, "User_info_DB")
+    Container(web_auth, "Web_auth_app")
+}
+
+System_Boundary(movies_service, "Movies_service"){
+    ContainerDb(search_db, "Search Database")
+    ContainerDb(cache_db, "Cache Database")
+    Container(movies_app, "Movies Service")
+}
+
+System_Boundary(ugc_service, "UGC_service"){
+    ContainerDb(ugc_db, "UGC database")
+    Container(ugc_web_app, "UGC Web App")
+    ContainerDb(events_db, "Events database")
+}
+System_Ext(yandex_soc, "Yandex Social Network")
+
+
+Rel(web_app, movies_db, "Чтение и добавление фильмов", djangoORM)
+Rel(etl_admin, movies_db, "Чтение базы данных")
+Rel(etl_admin, search_db, "Запись в поисковый движок")
+
+Rel(movies_app, cache_db, "Запись кэша в базу данных")
+Rel(movies_app, search_db, "Чтение базы данных фильмов")
+
+Rel(web_auth, cache_auth_db, "Работа с токенами JWT")
+Rel(web_auth, user_auth_db, "Чтение и запись пользователей")
+Rel(web_auth, yandex_soc, "OAuth2.0", "REST API")
+Rel(web_app, web_auth, "Запрос аунтификации", "REST API")
+
+Rel(user, web_auth,)
+Rel(user, movies_app,)
+
+Rel(anonim, web_auth,)
+Rel(anonim, movies_app,)
+
+Rel(admin, web_auth,)
+Rel(admin, movies_app,)
+Rel(admin, web_app,)
+Rel(analyst, ugc_web_app,)
+
+Rel(ugc_web_app, events_db, "")
+Rel(ugc_web_app, ugc_db, "")
+
+Rel(admin, ugc_web_app, "Удаление отзывов", "REST API")
+
+
+
+@enduml
