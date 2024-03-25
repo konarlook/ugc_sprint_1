@@ -4,37 +4,39 @@
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-together{
-Person(analyst, "Analyst")
-Person(admin, "Admin")
 Person(user, "User")
-}
-together{
-Container_Ext(broker, "Message-broker")
-Container_Ext(movies_service, "Movies service")
-}
+Person(analyst, "Analyst")
+
 System_Boundary(ugc_service, "UGC"){
     together{
-    Container(give_review, "Create review")
-    Container(give_events, "Write events")
-    Container(delete_review, "Delete review")
-    Container(update_review, "Update review")
-    Container(get_review, "Get review")
+        Container(player_event, "GetPlayerEvent")
+        Container(front_event, "GetFrontendEvent")
     }
-    Container(sing_in, "Auth controller")
+
+    together{
+        Container(parser_player_event, "ParsingPlayerEvent")
+        Container(parser_frontend_event, "ParsingFrontendEvent")
+    }
 }
 
 together{
-ContainerDb(ugc_database, "UGC database")
+Container_Ext(broker, "Message-broker")
+}
+
+Container(ugc_etl, "UGC ETL")
+
+together{
 ContainerDb(event_database, "Events database")
 }
 
-Rel(user, give_review, "Review message", "JSON,HTTPS")
-Rel(give_review, sing_in, "User info", "JWT")
-Rel(sing_in, ugc_database,)
-Rel(give_review, event_database, "Event info", "SQL")
-Rel(give_events, event_database, "Event info", "SQL")
-Rel(broker, give_events, "Event info", "JSON,HTTPS")
-
+Rel(user, front_event, "[JWT, URL, event_dt]")
+Rel(user, player_event, "[event_dt, event_type, *]")
+Rel(player_event, parser_player_event,)
+Rel(front_event, parser_frontend_event,)
+Rel(parser_frontend_event, broker,)
+Rel(parser_player_event, broker,)
+Rel(broker, ugc_etl,)
+Rel(ugc_etl, event_database,)
+Rel(analyst, event_database,)
 
 @enduml

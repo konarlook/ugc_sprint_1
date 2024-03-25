@@ -11,5 +11,4 @@ Container_Ext(yandex_soc, "Yandex Social Network", ,"Аунтификация ч
 
 Rel(user, service,"Просмотр фильмов, получение информации о них")
 Rel(service, yandex_soc, "Получение информации о пользователе для подтверждения личности")
-
 @enduml
