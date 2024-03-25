@@ -1,2 +1,4 @@
-kafka-python==2.0.2
 aio-pika==9.4.1
+kafka-python==2.0.2
+
+flask==3.0.2
