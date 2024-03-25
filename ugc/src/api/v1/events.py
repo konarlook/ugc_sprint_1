@@ -3,11 +3,11 @@ from flask import Blueprint
 routers = Blueprint("ugc", __name__, url_prefix="/ugc")
 
 
-@routers.post("/click_event")
-async def post_click_event():
-    pass
+@routers.route("/click_event", methods=["POST"])
+async def post_click_event(username: str):
+    return f"User - {username}"
 
 
-@routers.post("/player_event")
-async def post_player_event():
-    pass
+@routers.route("/player_event", methods=["POST"])
+async def post_player_event(click: str):
+    return f"Click - {click}"
