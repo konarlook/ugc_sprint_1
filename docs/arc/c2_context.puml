@@ -35,12 +35,12 @@ System_Boundary(ugc_service, "UGC_service"){
 System_Ext(yandex_soc, "Yandex Social Network")
 
 
-Rel(web_app, movies_db, "Чтение и добавление фильмов", djangoORM)
-Rel(etl_admin, movies_db, "Чтение базы данных")
-Rel(etl_admin, search_db, "Запись в поисковый движок")
+Rel(web_app, movies_db,, djangoORM)
+Rel(etl_admin, movies_db, )
+Rel(etl_admin, search_db,)
 
-Rel(movies_app, cache_db, "Запись кэша в базу данных")
-Rel(movies_app, search_db, "Чтение базы данных фильмов")
+Rel(movies_app, cache_db,)
+Rel(movies_app, search_db, )
 
 Rel(web_auth, cache_auth_db, "Работа с токенами JWT")
 Rel(web_auth, user_auth_db, "Чтение и запись пользователей")
@@ -56,12 +56,12 @@ Rel(anonim, movies_app,)
 Rel(admin, web_auth,)
 Rel(admin, movies_app,)
 Rel(admin, web_app,)
-Rel(analyst, ugc_web_app,)
+Rel(analyst, events_db,)
 
 Rel(ugc_web_app, events_db, "")
 Rel(ugc_web_app, ugc_db, "")
 
-Rel(admin, ugc_web_app, "Удаление отзывов", "REST API")
+Rel(admin, ugc_web_app, "", "")
 
 
 
