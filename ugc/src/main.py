@@ -1,25 +1,22 @@
 from flask import Flask
-from flasgger import Swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 from api.v1.events import routers
 
-template = {
-    "swagger": "2.0",
-    "info": {
-        "title": "UGC service",
-        "description": "Service for data analytics",
-        "version": "1.0",
-    },
-}
-
 app = Flask(__name__)
-app.register_blueprint(routers)
-app.config["SWAGGER"] = {
-    "title": "UGC service",
-    "uiversion": 3,
-    "specs_route": "/ugc/api/v1/openapi/",
-}
 
-swagger = Swagger(app, template=template)
+SWAGGER_URL = "/ugc/api/openapi"
+API_URL = "/static/api/v1/openapi.yaml"
+
+swagger_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        "app_name": "UGC service",
+    },
+)
+
+app.register_blueprint(swagger_blueprint)
+app.register_blueprint(routers)
 
 if __name__ == "__main__":
     app.run(debug=True)
