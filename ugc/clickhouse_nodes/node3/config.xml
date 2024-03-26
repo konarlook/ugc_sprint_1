@@ -35,7 +35,7 @@
     <mlock_executable>false</mlock_executable>
 
     <remote_servers>
-        <company_cluster>
+        <ugc_cluster>
             <shard>
                 <replica>
                     <default_database>shard</default_database>
@@ -53,7 +53,7 @@
                     <port>9000</port>
                 </replica>
             </shard>
-        </company_cluster>
+        </ugc_cluster>
     </remote_servers>
 
     <zookeeper>
@@ -64,7 +64,7 @@
     </zookeeper>
 
     <macros>
-        <cluster>company_cluster</cluster>
+        <cluster>ugc_cluster</cluster>
         <shard>1</shard>
         <replica>clickhouse-node3</replica>
     </macros>
