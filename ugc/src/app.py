@@ -14,7 +14,7 @@ template = {
 }
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://ugc_user:ugc_pass@localhost:5432/ugc"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://ugc_user:ugc_pass@db:5432/ugc"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -28,14 +28,5 @@ app.config["SWAGGER"] = {
 
 swagger = Swagger(app, template=template)
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
-
-# cd ugc/src
-
-# flask db init
-
-# flask db migrate -m "Initial migration"
-
-# flask db upgrade
+    app.run(debug=True, host='0.0.0.0')
