@@ -1,7 +1,6 @@
 version: '3.0'
 
 services:
-
   db:
     container_name: "db"
     image: postgres:14.1-alpine
@@ -12,3 +11,12 @@ services:
       - POSTGRES_DB=ugc
     ports:
       - "5432:5432"
+
+  flask_app:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://ugc_user:ugc_pass@db:5432/ugc
