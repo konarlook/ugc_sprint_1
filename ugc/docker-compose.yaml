@@ -6,9 +6,9 @@ services:
     image: postgres:14.1-alpine
     restart: always
     environment:
-      - POSTGRES_USER=ugc_user
+      - POSTGRES_USER=ugc_user # переменные окружения не забыть
       - POSTGRES_PASSWORD=ugc_pass
-      - POSTGRES_DB=ugc
+      - POSTGRES_DB=ugc_database
     ports:
       - "5432:5432"
 
@@ -18,5 +18,3 @@ services:
       - "5000:5000"
     depends_on:
       - db
-    environment:
-      - DATABASE_URL=postgresql://ugc_user:ugc_pass@db:5432/ugc
