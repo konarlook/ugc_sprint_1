@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 from models.entity import db
 from flasgger import Swagger
 from api.v1.events import routers
+from core.config import Config
 
 template = {
     "swagger": "2.0",
@@ -14,8 +15,9 @@ template = {
 }
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://ugc_user:ugc_pass@db:5432/ugc_database" # переменные окружения не забыть указать
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# миграции
+app.config.from_object(Config)
 db.init_app(app)
 migrate = Migrate(app, db)
 
