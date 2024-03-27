@@ -1,34 +1,40 @@
 from flask import Flask
 from flask_migrate import Migrate
-from models.entity import db
-from flasgger import Swagger
+from flask_swagger_ui import get_swaggerui_blueprint
 from api.v1.events import routers
 from core.config import Config
+from models.entity import db
 
-template = {
-    "swagger": "2.0",
-    "info": {
-        "title": "UGC service",
-        "description": "Service for data analytics",
-        "version": "1.0",
+SWAGGER_URL = "/ugc/api/openapi"
+API_URL = "/static/api/v1/openapi.yaml"
+
+swagger_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        "app_name": "UGC service",
     },
-}
+)
 
-app = Flask(__name__)
+def create_app():
+    flask_application = Flask(__name__)
 
-# миграции
-app.config.from_object(Config)
-db.init_app(app)
-migrate = Migrate(app, db)
+    # конфигурация приложения
+    flask_application.config.from_object(Config)
 
-app.register_blueprint(routers)
-app.config["SWAGGER"] = {
-    "title": "UGC service",
-    "uiversion": 3,
-    "specs_route": "/ugc/api/v1/openapi/",
-}
+    # инициализация базы данных
+    db.init_app(flask_application)
 
-swagger = Swagger(app, template=template)
+    # миграции
+    Migrate(flask_application, db)
+
+    # регистрация маршрутов
+    flask_application.register_blueprint(routers)
+    flask_application.register_blueprint(swagger_blueprint)
+
+    return flask_application
+
+app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

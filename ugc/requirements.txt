@@ -3,6 +3,7 @@ kafka-python==2.0.2
 
 flask==3.0.2
 flasgger==0.9.7.1
+flask-swagger-ui==4.11.1
 
 alembic==1.13.1
 blinker==1.7.0
@@ -20,3 +21,4 @@ psycopg2-binary==2.9.9
 SQLAlchemy==2.0.29
 typing_extensions==4.10.0
 Werkzeug==3.0.1
+flask-swagger-ui==4.11.1
