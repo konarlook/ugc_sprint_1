@@ -3,3 +3,5 @@ kafka-python==2.0.2
 
 flask==3.0.2
 flask-swagger-ui==4.11.1
+pydantic==2.6.4
+pydantic-settings==2.2.1
