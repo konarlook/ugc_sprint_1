@@ -23,13 +23,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: event_dt
-          in: query
-          description: "Time of event"
-          required: true
-          schema:
-            type: string
-            format: date-time
         - name: url
           in: query
           description: "URL for moving"
@@ -61,13 +54,6 @@ paths:
           schema:
             type: string
             enum: [ stop, start, repeat, settings ]
-        - name: event_dt
-          in: query
-          description: "Time of event"
-          required: true
-          schema:
-            type: string
-            format: date-time
         - name: movie_url
           in: query
           description: "URL to filmwork"
