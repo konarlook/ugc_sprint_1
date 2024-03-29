@@ -1,9 +1,16 @@
+import logging
+
 from clickhouse_driver import Client
 
+from config import settings
 
-# ДОБАВИТЬ ИМПОРТ ПЕРЕМЕННЫХ ИЗ SETTINGS
+
 def create_tables_for_first_node():
-    client = Client(host='localhost', port=9000, user='admin', password='123')
+    logging.info('Prepare to create databases on first node')
+    client = Client(host='clickhouse-node1',
+                    user=settings.clickhouse_username,
+                    password=settings.clickhouse_password)
+    logging.info('Client created')
 
     client.execute('CREATE DATABASE IF NOT EXISTS shard_db;')
     client.execute('CREATE DATABASE IF NOT EXISTS replica_db;')
@@ -44,15 +51,23 @@ def create_tables_for_first_node():
 
     shard_db_tables = client.execute('SHOW TABLES FROM shard_db')
     if shard_db_tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+        logging.error("Required tables don't exist on first node (shard_db)!")
         raise Exception
 
     replica_db_tables = client.execute('SHOW TABLES FROM replica_db')
     if replica_db_tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+        logging.error("Required tables don't exist on first node (replica_db)!")
         raise Exception
+
+    logging.info("Tables successfully created on first node!")
 
 
 def create_tables_for_second_node():
-    client = Client(host='localhost', port=9001, user='admin', password='123')
+    logging.info('Prepare to create databases on second node')
+    client = Client(host='clickhouse-node2',
+                    user=settings.clickhouse_username,
+                    password=settings.clickhouse_password)
+    logging.info('Client created')
 
     client.execute('CREATE DATABASE IF NOT EXISTS replica_db;')
 
@@ -79,11 +94,18 @@ def create_tables_for_second_node():
 
     tables = client.execute('SHOW TABLES FROM replica_db')
     if tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+        logging.error("Required tables don't exist on second node (replica_db)!")
         raise Exception
+
+    logging.info("Tables successfully created on second node!")
 
 
 def create_tables_for_third_node():
-    client = Client(host='localhost', port=9002, user='admin', password='123')
+    logging.info('Prepare to create databases on third node')
+    client = Client(host='clickhouse-node3',
+                    user=settings.clickhouse_username,
+                    password=settings.clickhouse_password)
+    logging.info('Client created')
 
     client.execute('CREATE DATABASE IF NOT EXISTS replica_db;')
 
@@ -110,35 +132,19 @@ def create_tables_for_third_node():
 
     tables = client.execute('SHOW TABLES FROM replica_db')
     if tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+        logging.error("Required tables don't exist on third node (replica_db)!")
         raise Exception
 
-
-# def select_test():
-#     first_client = Client(host='localhost', port=9002, user='admin', password='123')
-#     first_client.execute(
-#         "INSERT INTO replica_db.player_progress \
-#         (user_id, movie_id, event_dt, view_progress, movie_duration) \
-#         VALUES (\
-#             '1c1884cc-17c8-4d6c-93c3-c4c385f468b5', \
-#             '251fd098-0965-4c79-8ab6-81404f9f9e37', \
-#             today(), \
-#             123, \
-#             456 \
-#         )")
-
-#     first_result = first_client.execute('SELECT * FROM replica_db.player_progress')
-
-#     second_client = Client(host='localhost', port=9000, user='admin', password='123')
-#     second_result = second_client.execute('SELECT * FROM shard_db.player_progress')
-
-#     if first_result != second_result:
-#         raise Exception
+    logging.info("Tables successfully created on third node!")
 
 
 def main():
-    create_tables_for_first_node()
-    create_tables_for_second_node()
-    create_tables_for_third_node()
+    try:
+        create_tables_for_first_node()
+        create_tables_for_second_node()
+        create_tables_for_third_node()
+    except Exception as e:
+        logging.error(f'{e.__class__.__name__}: \n {str(e)}')
 
 
 if __name__ == '__main__':
