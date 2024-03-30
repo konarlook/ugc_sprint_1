@@ -1,18 +1,20 @@
-FROM python:3.10
+FROM python:3.11.7
 
-# Установка PostgreSQL клиента
-RUN apt-get update && \
-    apt-get install -y postgresql-client && \
-    rm -rf /var/lib/apt/lists/*
+WORKDIR /opt/ugc
 
-WORKDIR /opt/app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt requirements.txt
-COPY entrypoint.sh entrypoint.sh
-COPY src/. .
 
-RUN pip install --upgrade pip && pip install -r requirements.txt --no-cache-dir
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y build-essential libpq-dev gcc python3-dev musl-dev  \
+    && pip install --upgrade pip  \
+    && pip install -r requirements.txt --no-cache-dir \
+    && apt-get clean
 
-EXPOSE 5000
+COPY . .
 
-ENTRYPOINT ["sh", "entrypoint.sh"]
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["/opt/entrypoint.sh"]

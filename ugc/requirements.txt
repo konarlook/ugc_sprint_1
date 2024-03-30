@@ -22,3 +22,8 @@ SQLAlchemy==2.0.29
 typing_extensions==4.10.0
 Werkzeug==3.0.1
 flask-swagger-ui==4.11.1
+pydantic==2.6.4
+pydantic-settings==2.2.1
+
+pyjwt[crypto]==2.8.0
+werkzeug==3.0.1
