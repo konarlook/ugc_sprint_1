@@ -19,6 +19,24 @@ class CommonSettings(_BaseSettings):
     service_name: str = Field(default="ugc", description="Name of service")
 
 
+class AuthJWTSettings(_BaseSettings):
+    """JWT settings for check privileges"""
+
+    public_key: Path = Path(__file__).parent / "certs" / "public.pem"
+    auth_algorithm_password: str = Field(
+        default="RS256",
+        description="Token encryption algorithm",
+    )
+    access_token_lifetime: int = Field(
+        default=3600,
+        description="Lifetime of access tokens in seconds",
+    )
+    refresh_token_lifetime: int = Field(
+        default=86400,
+        description="Refresh token lifetime in seconds",
+    )
+
+
 class KafkaSettings(_BaseSettings):
     """Kafka settings for service"""
 
@@ -29,6 +47,7 @@ class KafkaSettings(_BaseSettings):
 class Settings(CommonSettings):
     """Main class for combine settings"""
 
+    auth_jwt = AuthJWTSettings()
     kafka = KafkaSettings()
 
 
