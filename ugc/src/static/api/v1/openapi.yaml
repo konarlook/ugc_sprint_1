@@ -9,7 +9,15 @@ paths:
   /click_event/{event_type}:
     post:
       summary: "Post clicking event"
+      security:
+        - cookieAuth: [ ]
       parameters:
+        - in: cookie
+          name: access-token
+          description: "Access token from cookie"
+          required: true
+          schema:
+            type: string
         - name: event_type
           in: path
           description: "Type of click event"
@@ -17,12 +25,6 @@ paths:
           schema:
             type: string
             enum: [ click, close, to_url ]
-        - name: jwt_token
-          in: query
-          description: "Access token"
-          required: true
-          schema:
-            type: string
         - name: url
           in: query
           description: "URL for moving"
@@ -46,7 +48,15 @@ paths:
   /player_event/{event_type}:
     post:
       summary: "Post videoplayer event"
+      security:
+        - cookieAuth: [ ]
       parameters:
+        - in: cookie
+          name: access-token
+          description: "Access token from cookie"
+          required: true
+          schema:
+            type: string
         - name: event_type
           in: path
           description: "Type of event"
@@ -73,3 +83,10 @@ paths:
           description: "Specified resource not found"
         '500':
           description: "Internal server error"
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access-token
