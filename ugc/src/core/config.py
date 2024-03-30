@@ -40,15 +40,15 @@ class AuthJWTSettings(_BaseSettings):
 class KafkaSettings(_BaseSettings):
     """Kafka settings for service"""
 
-    kafka_dsn: KafkaDsn
-    kafka_topic: str
+    kafka_dsn: KafkaDsn | None = Field(default=None)
+    kafka_topic: str | None = Field(default=None)
 
 
 class Settings(CommonSettings):
     """Main class for combine settings"""
 
-    auth_jwt = AuthJWTSettings()
-    kafka = KafkaSettings()
+    auth_jwt: AuthJWTSettings = AuthJWTSettings()
+    kafka: KafkaSettings = KafkaSettings()
 
 
 settings = Settings()
