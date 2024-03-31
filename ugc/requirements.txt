@@ -1,3 +1,5 @@
+orjson==3.10.0
+
 aio-pika==9.4.1
 kafka-python==2.0.2
 
@@ -8,3 +10,5 @@ pydantic-settings==2.2.1
 
 pyjwt[crypto]==2.8.0
 werkzeug==3.0.1
+
+aiokafka==0.10.0
