@@ -1,0 +1,52 @@
+@startuml system-context
+
+title Взаимодействие между компонентами системы
+
+=== Аутентификация ===
+
+participant "Web" as Web
+participant "Auth" as Auth
+
+group Аутентификация
+    Web --> Auth: Запрос на добавление
+    Auth --> Web: JWT Token
+end
+
+=== Управление контентом ===
+
+participant "UGC" as UGC
+participant "ClickHouse" as ClickHouse
+participant "PostgreSQL" as PostgreSQL
+participant "ETLKafka" as ETLKafka
+
+group Добавление комментария к фильму
+    Web --> UGC: JWT Token, POST
+    UGC --> Kafka: Отправка данных в кафку
+    Kafka --> ETLKafka: Полученные данные
+    ETLKafka --> ClickHouse: Добавление данных в хранилище
+    ETLKafka --> PostgreSQL: Добавление данных в базу
+    PostgreSQL --> UGC: Ответ
+    UGC --> Web: Ответ
+end
+
+group Добавление фильма в закладки
+    Web --> UGC: JWT Token, POST
+    UGC --> Kafka: Отправка данных в кафку
+    Kafka --> ETLKafka: Полученные данные
+    ETLKafka --> ClickHouse: Добавление данных в хранилище
+    ETLKafka --> PostgreSQL: Добавление данных в базу
+    PostgreSQL --> UGC: Ответ
+    UGC --> Web: Ответ
+end
+
+group Лайк фильму
+    Web --> UGC: JWT Token, POST
+    UGC --> Kafka: Отправка данных в кафку
+    Kafka --> ETLKafka: Полученные данные
+    ETLKafka --> ClickHouse: Добавление данных в хранилище
+    ETLKafka --> PostgreSQL: Добавление данных в базу
+    PostgreSQL --> UGC: Ответ
+    UGC --> Web: Ответ
+end
+
+@enduml
