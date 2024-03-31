@@ -6,5 +6,5 @@ class BaseDataService(ABC):
         self.producer = producer
 
     @abstractmethod
-    def produce(self):
+    def produce(self, *args, **kwargs):
         pass

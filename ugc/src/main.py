@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_swagger_ui import get_swaggerui_blueprint
+
 from api.v1.events import routers
+from helpers.kafka_init import get_kafka_init, KafkaInit
 
 SWAGGER_URL = "/ugc/api/openapi"
 API_URL = "/static/api/v1/openapi.yaml"
@@ -12,6 +14,10 @@ swagger_blueprint = get_swaggerui_blueprint(
         "app_name": "UGC service",
     },
 )
+
+
+def init_kafka(kafka_init_app: KafkaInit = get_kafka_init()):
+    kafka_init_app.create_topics()
 
 
 def create_app():
@@ -26,4 +32,5 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
+    init_kafka()
     app.run(debug=True)
