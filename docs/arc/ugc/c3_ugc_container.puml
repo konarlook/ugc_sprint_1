@@ -1,0 +1,42 @@
+@startuml system-context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+Person(user, "User")
+Person(analyst, "Analyst")
+
+System_Boundary(ugc_service, "UGC"){
+    together{
+        Container(player_event, "GetPlayerEvent")
+        Container(front_event, "GetFrontendEvent")
+    }
+
+    together{
+        Container(parser_player_event, "ParsingPlayerEvent")
+        Container(parser_frontend_event, "ParsingFrontendEvent")
+    }
+}
+
+together{
+Container_Ext(broker, "Message-broker")
+}
+
+Container(ugc_etl, "UGC ETL")
+
+together{
+ContainerDb(event_database, "Events database")
+}
+
+Rel(user, front_event, "[JWT, URL, event_dt]")
+Rel(user, player_event, "[event_dt, event_type, *]")
+Rel(player_event, parser_player_event,)
+Rel(front_event, parser_frontend_event,)
+Rel(parser_frontend_event, broker,)
+Rel(parser_player_event, broker,)
+Rel(broker, ugc_etl,)
+Rel(ugc_etl, event_database,)
+Rel(analyst, event_database,)
+
+@enduml
