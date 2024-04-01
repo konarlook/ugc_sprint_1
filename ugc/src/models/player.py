@@ -16,8 +16,8 @@ class EventsNames(Enum):
 
 
 class PlayerSettingEvents(KafkaModelConfig):
-    user_id: UUID = Field(description="UUID пользователя")
-    movie_id: UUID = Field(description="UUID произведения")
+    user_id: str = Field(description="UUID пользователя")
+    movie_id: str = Field(description="UUID произведения")
     event_dt: datetime.datetime = Field(default_factory=datetime.datetime.utcnow, description="Время события")
     event_type: int = Field(description="Тип события")
 
