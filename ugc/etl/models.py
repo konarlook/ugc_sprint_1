@@ -2,7 +2,7 @@ from uuid import UUID
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 
 class EventsNames(Enum):
@@ -19,6 +19,12 @@ class PlayerProgressEventSchema(BaseModel):
     event_dt: datetime = Field(comment="Прогресс просмотра фильма")
     view_progress: int = Field(comment="События в плеере")
     movie_duration: int = Field(comment="Длительность фильма")
+
+    @validator('view_progress', 'movie_duration')
+    def compare_duration_and_view(self):
+        if self.view_progress > self.movie_duration:
+            raise ValueError('View_progress if larger than movie_duration')
+        return self
 
 
 class PlayerSettingsEventSchema(BaseModel):

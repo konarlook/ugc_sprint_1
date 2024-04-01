@@ -158,6 +158,23 @@ services:
       - auth_network
       - network_project
 
+  kafka-ch-etl:
+    build: ./ugc/etl
+    container_name: kafka-ch-etl
+    env_file:
+      - .env
+    depends_on:
+      - kafka-0
+      - kafka-1
+      - kafka-2
+      - kafka_ui
+      - zookeeper
+      - clickhouse-node1
+      - clickhouse-node2
+      - clickhouse-node3
+    networks:
+      - network_project
+
 volumes:
   db_data:
   static_data:
