@@ -46,6 +46,16 @@ def upgrade() -> None:
             },
             {
                 "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "40869140-b9b1-4665-9af4-efffa6042e09",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "70ddea8f-7c76-4642-a00b-b4f2c4934f17",
+            },
+            {
+                "id": uuid.uuid4(),
                 "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
                 "action_id": "bb29bca0-a549-4aa7-b75e-39d4ebf648a9",
             },
@@ -108,6 +118,16 @@ def upgrade() -> None:
                 "id": uuid.uuid4(),
                 "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
                 "action_id": "8f02e288-62db-4499-8457-e8aeb12cadef",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "40869140-b9b1-4665-9af4-efffa6042e09",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "70ddea8f-7c76-4642-a00b-b4f2c4934f17",
             },
         ],
     )
