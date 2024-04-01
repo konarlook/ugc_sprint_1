@@ -114,6 +114,16 @@ def upgrade() -> None:
                 "action_name": "update_role",
                 "comment": "Верифицировать роль пользователя",
             },
+            {
+                "id": "40869140-b9b1-4665-9af4-efffa6042e09",
+                "action_name": "post_click_event",
+                "comment": "Запись истории действий",
+            },
+            {
+                "id": "70ddea8f-7c76-4642-a00b-b4f2c4934f17",
+                "action_name": "post_player_event",
+                "comment": "Запись событий видео плеера",
+            },
         ],
     )
     # ### end Alembic commands ###
