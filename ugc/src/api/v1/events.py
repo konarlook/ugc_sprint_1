@@ -4,6 +4,7 @@ from flask import Blueprint
 from flask import request, jsonify
 
 from core.constants import TopicNames
+from helpers.access import check_access_token
 from models.click import ClickEvent
 from models.player import PlayerProgress, EventsNames, PlayerSettingEvents
 from services.click_event import get_click_service, ClickService
@@ -13,8 +14,8 @@ routers = Blueprint("ugc", __name__, url_prefix="/ugc")
 
 
 @routers.route("/click_event", methods=["POST"])
-# @check_access_token
-async def post_click_event():
+@check_access_token
+async def post_click_event(user_info: dict = {}):
     """API for post click events, parsing and moving to Kafka ETL"""
     click_service: ClickService = get_click_service()
     request_data = request.args.to_dict()
@@ -24,8 +25,8 @@ async def post_click_event():
 
 
 @routers.route("/player_event", methods=["POST"])
-# @check_access_token
-async def post_player_event():
+@check_access_token
+async def post_player_event(user_info: dict = {}):
     """API for post player events, parsing and moving to Kafka ETL"""
     player_service: PlayerService = get_player_service()
     request_data = request.args.to_dict()
@@ -36,8 +37,8 @@ async def post_player_event():
 
 
 @routers.route("/player_progress", methods=["POST"])
-# @check_access_token
-async def post_player_progress():
+@check_access_token
+async def post_player_progress(user_info: dict = {}):
     """API for post player events, parsing and moving to Kafka ETL"""
     player_service: PlayerService = get_player_service()
     request_data = request.args.to_dict()
