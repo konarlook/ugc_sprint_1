@@ -1,5 +1,6 @@
 import asyncio
 
+from broker.base import BaseBrokerProducer
 from broker.kafka import get_kafka_producer
 from models.player import PlayerProgress, PlayerSettingEvents
 from .base import BaseDataService
@@ -8,12 +9,12 @@ from .base import BaseDataService
 class PlayerService(BaseDataService):
     """Service for view progress of players"""
 
-    def __init__(self, producer):
-        super().__init__(producer=producer)
+    def __init__(self, producer: BaseBrokerProducer):
+        super().__init__(client=producer)
 
-    async def produce(self, topic_name: str, message_model: PlayerProgress | PlayerSettingEvents):
-        print(0)
-        await self.producer.produce(topic=topic_name, message=message_model)
+    async def send_message(self, topic_name: str, message_model: PlayerProgress | PlayerSettingEvents):
+        """Send message to Kafka topic"""
+        await self.client.produce(topic=topic_name, message=message_model)
 
 
 def get_player_service():

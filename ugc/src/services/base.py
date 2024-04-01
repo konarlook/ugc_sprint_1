@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class BaseDataService(ABC):
-    def __init__(self, producer):
-        self.producer = producer
+    def __init__(self, client):
+        self.client = client
 
     @abstractmethod
-    def produce(self, *args, **kwargs):
+    def send_message(self, *args, **kwargs):
         pass
