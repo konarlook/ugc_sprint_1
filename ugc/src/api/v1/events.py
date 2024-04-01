@@ -1,10 +1,7 @@
 from http import HTTPStatus
-from flask import Blueprint
 
-from helpers.access import check_access_token
-from uuid import UUID
-import datetime
-from flask import request
+from flask import Blueprint
+from flask import request, jsonify
 
 from models.click import ClickEvent
 from models.player import PlayerProgress, EventsNames, PlayerSettingEvents
@@ -22,7 +19,7 @@ async def post_click_event():
     request_data = request.args.to_dict()
     data_model = ClickEvent(**request_data)
     await click_service.send_message(topic_name="click_events", message_model=data_model)
-    return [HTTPStatus.OK]
+    return jsonify({'message': f'Message sent'}), HTTPStatus.OK
 
 
 @routers.route("/player_event", methods=["POST"])
@@ -34,7 +31,7 @@ async def post_player_event():
     request_data["event_type"] = EventsNames[request_data["event_type"]]
     data_model = PlayerSettingEvents(**request_data)
     await player_service.send_message(topic_name="player_settings_events", message_model=data_model)
-    return [HTTPStatus.OK]
+    return jsonify({'message': f'Message sent'}), HTTPStatus.OK
 
 
 @routers.route("/player_progress", methods=["POST"])
@@ -45,4 +42,4 @@ async def post_player_progress():
     request_data = request.args.to_dict()
     data_model = PlayerProgress(**request_data)
     await player_service.send_message(topic_name="player_progress", message_model=data_model)
-    return [HTTPStatus.OK]
+    return jsonify({'message': f'Message sent'}), HTTPStatus.OK

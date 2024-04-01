@@ -6,6 +6,7 @@ from .base import BaseBrokerProducer
 
 class KafkaBrokerProducer(BaseBrokerProducer):
     """Kafka producer for sending messages to kafka topic"""
+
     def __init__(self, client: AIOKafkaProducer):
         self.client = client
 
