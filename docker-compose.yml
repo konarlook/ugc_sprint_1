@@ -158,19 +158,6 @@ services:
       - auth_network
       - network_project
 
-  clickhouse-init:
-    build: ./ugc/clickhouse_init
-    container_name: clickhouse-init
-    env_file:
-      - .env
-    depends_on:
-      - zookeeper
-      - clickhouse-node1
-      - clickhouse-node2
-      - clickhouse-node3
-    networks:
-     - network_project
-
   zookeeper:
     image: zookeeper:3.8
     container_name: zookeeper
@@ -211,6 +198,19 @@ services:
     networks:
       - network_project
 
+  clickhouse-init:
+    build: ./ugc/clickhouse_init
+    container_name: clickhouse-init
+    env_file:
+      - .env
+    depends_on:
+      - zookeeper
+      - clickhouse-node1
+      - clickhouse-node2
+      - clickhouse-node3
+    networks:
+      - network_project
+      
   kafka-0:
     image: bitnami/kafka:3.4
     ports:
@@ -281,6 +281,17 @@ services:
       - KAFKA_CLUSTERS_0_NAME=kraft
     networks:
       - kafka_network
+
+  kafka-ch-etl:
+    build: ./ugc/etl
+    container_name: kafka-ch-etl
+    env_file:
+      - .env
+    depends_on:
+      - kafka-0
+      - kafka-1
+      - kafka-2
+      - kafka_ui
 
 volumes:
   db_data:
