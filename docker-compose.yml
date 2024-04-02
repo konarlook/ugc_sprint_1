@@ -173,6 +173,8 @@ services:
       - ./ugc/clickhouse_nodes/node1:/etc/clickhouse-server
     depends_on:
       - zookeeper
+    ports:
+      - "8123:8123"
     networks:
      - network_project
 
@@ -301,7 +303,6 @@ services:
       - kafka-0
       - kafka-1
       - kafka-2
-      - kafka_ui
 
 volumes:
   db_data:
