@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+  vertica:
+    image: jbfavre/vertica:latest 
+    container_name: vertica
+    env_file:
+      - ../../../.env
+    ports:
+      - '5433:5433'
+    networks:
+      - benchmark_tests
+
+  vertica-bench-test:
+    build: .
+    container_name: vertica_bench_test
+    env_file:
+      - ../../../.env
+    depends_on:
+      - vertica
+    networks:
+      - benchmark_tests
+
+
+    
+
+networks:
+  benchmark_tests:
+    driver: bridge

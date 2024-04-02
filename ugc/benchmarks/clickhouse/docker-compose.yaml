@@ -6,7 +6,7 @@ services:
     container_name: test_zookeeper
     hostname: zookeeper
     networks:
-      - benchmark_tests
+      - clickhouse_benchmark_tests
 
   clickhouse-node1:
     image: clickhouse/clickhouse-server:23
@@ -16,11 +16,8 @@ services:
       - ./clickhouse_nodes/node1:/etc/clickhouse-server
     depends_on:
       - zookeeper
-    # ports:
-    #   - "8123:8123"
-    #   - "9000:9000"
     networks:
-      - benchmark_tests
+      - clickhouse_benchmark_tests
 
   clickhouse-node2:
     image: clickhouse/clickhouse-server:23
@@ -31,7 +28,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - benchmark_tests
+      - clickhouse_benchmark_tests
 
   clickhouse-node3:
     image: clickhouse/clickhouse-server:23
@@ -42,22 +39,23 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - benchmark_tests
+      - clickhouse_benchmark_tests
   
   clickhouse-bench-test:
-    build: ./clickhouse_bench_test
+    build: ./
     container_name: clickhouse_bench_test
     env_file:
-      - ../../.env
+      - ../../../.env
     depends_on:
       - zookeeper
       - clickhouse-node1
       - clickhouse-node2
       - clickhouse-node3
     networks:
-      - benchmark_tests
-    
+      - clickhouse_benchmark_tests
+
+   
 
 networks:
-  benchmark_tests:
+  clickhouse_benchmark_tests:
     driver: bridge

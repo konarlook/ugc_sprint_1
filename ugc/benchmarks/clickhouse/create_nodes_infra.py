@@ -60,9 +60,6 @@ def create_tables_for_first_node():
         raise Exception
 
     logging.info("Tables successfully created on first node!")
-    print(client.execute('SHOW DATABASES'))
-    print(client.execute('SHOW TABLES FROM shard_db'))
-    print(client.execute('SHOW TABLES FROM replica_db'))
 
 
 def create_tables_for_second_node():
@@ -101,8 +98,6 @@ def create_tables_for_second_node():
         raise Exception
 
     logging.info("Tables successfully created on second node!")
-    print(client.execute('SHOW DATABASES'))
-    print(client.execute('SHOW TABLES FROM replica_db'))
 
 
 def create_tables_for_third_node():
@@ -141,8 +136,6 @@ def create_tables_for_third_node():
         raise Exception
 
     logging.info("Tables successfully created on third node!")
-    print(client.execute('SHOW DATABASES'))
-    print(client.execute('SHOW TABLES FROM replica_db'))
 
 
 def main():

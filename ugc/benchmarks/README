@@ -1,0 +1,13 @@
+Tests results:
+
+Clickhouse
+ - Insert test
+Insertion speed: 11,307.91 records/sec
+ - Select test
+Select speed: 27,026.34 records/sec
+
+Vertica
+ - Insert test
+Insertion speed: 15,000.84 records/sec
+ - Select test
+Select speed: 175,651.01 records/sec

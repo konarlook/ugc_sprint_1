@@ -1,8 +1,6 @@
 import logging
 
-from socket import gaierror
 from clickhouse_driver import Client
-from clickhouse_driver.errors import NetworkError
 
 from backoff import backoff
 from config import settings
@@ -17,7 +15,8 @@ def wait_first_node():
         client.execute('SHOW DATABASES')
         logging.info("First node ready!")
         return True
-    except Exception:
+    except Exception as e:
+        logging.info(f'{e.__class__.__name__}')
         return None
 
 
@@ -30,7 +29,8 @@ def wait_second_node():
         client.execute('SHOW DATABASES')
         logging.info('Second node ready!')
         return True
-    except Exception:
+    except Exception as e:
+        logging.info(f'{e.__class__.__name__}')
         return None
 
 
@@ -43,7 +43,8 @@ def wait_third_node():
         client.execute('SHOW DATABASES')
         logging.info('Third node ready!')
         return True
-    except Exception:
+    except Exception as e:
+        logging.info(f'{e.__class__.__name__}')
         return None
 
 

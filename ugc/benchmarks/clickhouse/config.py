@@ -3,10 +3,10 @@ import logging
 from pydantic_settings import BaseSettings
 
 
-# logging.basicConfig(
-#     level=logging.INFO,
-#     filename="log.log",
-#     filemode="a")
+logging.basicConfig(
+    level=logging.INFO,
+    filename="log.log",
+    filemode="a")
 
 
 class Settings(BaseSettings):
