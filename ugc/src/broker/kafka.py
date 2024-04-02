@@ -2,7 +2,7 @@ from aiokafka import AIOKafkaProducer
 from pydantic import BaseModel
 
 from .base import BaseBrokerProducer
-
+from core.config import settings
 
 class KafkaBrokerProducer(BaseBrokerProducer):
     """Kafka producer for sending messages to kafka topic"""
@@ -23,7 +23,7 @@ def get_kafka_producer() -> KafkaBrokerProducer:
     """Get kafka producer"""
     return KafkaBrokerProducer(
         client=AIOKafkaProducer(
-            bootstrap_servers="localhost:9094",
+            bootstrap_servers=f"{settings.kafka.kafka_host}:{settings.kafka.kafka_port}",
             client_id='test'
         )
     )

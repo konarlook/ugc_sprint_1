@@ -213,6 +213,7 @@ services:
 
   kafka-0:
     image: bitnami/kafka:3.4
+    hostname: kafka_ugc
     ports:
       - "9094:9094"
     environment:
@@ -281,6 +282,15 @@ services:
       - KAFKA_CLUSTERS_0_NAME=kraft
     networks:
       - kafka_network
+
+  ugc-service:
+    container_name: ugc_service
+    build: ./ugc
+    env_file: .env
+    networks:
+     - kafka_network
+    ports:
+      - "5001:5001"
 
 volumes:
   db_data:

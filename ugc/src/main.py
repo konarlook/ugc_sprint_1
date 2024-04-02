@@ -26,11 +26,12 @@ def create_app():
     flask_application.register_blueprint(swagger_blueprint)
     flask_application.register_blueprint(routers)
 
+    init_kafka()
+
     return flask_application
 
 
 app = create_app()
 
 if __name__ == "__main__":
-    init_kafka()
-    app.run(debug=True)
+    app.run(debug=False)

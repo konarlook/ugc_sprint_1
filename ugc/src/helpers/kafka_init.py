@@ -3,6 +3,7 @@ from typing import Final
 
 from kafka.admin import KafkaAdminClient, NewTopic
 
+from core.config import settings
 from helpers import logger
 from models.topic import TopicConfig
 
@@ -22,7 +23,7 @@ class KafkaInit:
     def __init__(self):
         self.topics_list = []
         self.admin_client = KafkaAdminClient(
-            bootstrap_servers="localhost:9094",
+            bootstrap_servers=f"{settings.kafka.kafka_host}:{settings.kafka.kafka_port}",
             client_id='test'
         )
 
