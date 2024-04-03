@@ -1,3 +1,5 @@
+import logging
+
 from uuid import UUID
 from datetime import datetime
 from enum import Enum
@@ -23,8 +25,11 @@ class PlayerProgressEventSchema(BaseModel):
     @validator('view_progress', 'movie_duration')
     def compare_duration_and_view(self):
         if self.view_progress > self.movie_duration:
-            raise ValueError('View_progress if larger than movie_duration')
-        return self
+            logging.error(
+                'View_progress is larger than movie_duration.'
+                f'{self.user_id},{self.movie_id},'
+                f'{self.event_dt},{self.view_progress},{self.movie_duration}')
+        return None
 
 
 class PlayerSettingsEventSchema(BaseModel):

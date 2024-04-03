@@ -12,7 +12,7 @@ def convert_msg_to_modeldata(message_value, topic_name):
     try:
         model_data = model_data_schema.model_validate(message_value)
     except Exception as e:
-        logging.error(f'{e.__class__.__name__}:\n{str(e)=}')
+        logging.error(f'{e.__class__.__name__}:\n{str(e)}')
         return None
 
     return model_data
