@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+  clickhouse-server:
+    image: clickhouse/clickhouse-server:23
+    container_name: clickhouse_benchmark-server
+    ports: 
+      - '8123:8123'
+      - '9000:9000'
+    volumes:
+      - ./clickhouse_settings/users.xml:/etc/clickhouse-server/users.xml
+      - clickhouse_db:/var/lib/clickhouse
+
+  vertica:
+    image: jbfavre/vertica:latest 
+    container_name: vertica
+    env_file:
+      - ../../.env
+    ports:
+      - '5433:5433'
+
+volumes:
+  clickhouse_db:
