@@ -1,18 +1,19 @@
 import json
 import logging
 
-from config import settings
 from clickehouse_publisher import get_clickhouse_client
-from kafka_consumer import get_kafka_consumer
+from config import settings
 from constants import ASSOCIATION_TOPIC_TO_SCHEMA
+from kafka_consumer import get_kafka_consumer
 from logger import UGCLogger
 
 etl_logger = UGCLogger()
 
+
 def convert_msg_to_modeldata(message_value, topic_name):
     model_data_schema = ASSOCIATION_TOPIC_TO_SCHEMA[topic_name]
     try:
-        model_data = model_data_schema.model_validate(message_value)
+        model_data = model_data_schema(**message_value)
     except Exception as e:
         logging.error(f'{e.__class__.__name__}:\n{str(e)=}')
         return None
@@ -48,13 +49,11 @@ def consume_messages(consumer):
                 f'{topic_name}:\n{message_value}'
             )
             continue
-
         model_data = convert_msg_to_modeldata(message_value, topic_name)
         if model_data is None:
             continue
 
         row_to_insert = list(dict(model_data).values())
-
         topics_data[message.topic]['rows_to_insert'].append(row_to_insert)
         topics_data[message.topic]['message_count'] += 1
         logging.info(f'Messages count {topics_data[message.topic]["message_count"]}')
@@ -69,6 +68,7 @@ def consume_messages(consumer):
 
             clickhouse_client = get_clickhouse_client()
             try:
+                print(topics_data[message.topic]['rows_to_insert'])
                 clickhouse_client.execute(
                     query=sql_query,
                     params=topics_data[message.topic]['rows_to_insert'])

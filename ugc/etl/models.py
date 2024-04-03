@@ -27,6 +27,9 @@ class PlayerSettingsEventSchema(BaseModel):
     event_dt: datetime = Field(comment="Время события")
     event_type: EventsNames = Field(comment="События в плеере")
 
+    class Config:
+        use_enum_values = True
+
 
 class ClickEventSchema(BaseModel):
     user_id: str = Field(comment="Идентификатор пользователя")
