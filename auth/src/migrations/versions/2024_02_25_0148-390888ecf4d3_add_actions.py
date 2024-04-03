@@ -124,6 +124,11 @@ def upgrade() -> None:
                 "action_name": "post_player_event",
                 "comment": "Запись событий видео плеера",
             },
+            {
+                "id": "5213525f-b40e-43d5-8252-817987854ccf",
+                "action_name": "post_player_progress",
+                "comment": "Запись прогресса плеера",
+            },
         ],
     )
     # ### end Alembic commands ###
