@@ -15,6 +15,6 @@ RUN apt-get update \
 
 COPY . .
 
-RUN chmod +x entrypoint.sh
+RUN chmod +x etrypoint.sh
 
-ENTRYPOINT ["/opt/entrypoint.sh"]
+ENTRYPOINT ["/opt/ugc/etrypoint.sh"]

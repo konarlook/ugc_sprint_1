@@ -173,6 +173,8 @@ services:
       - ./ugc/clickhouse_nodes/node1:/etc/clickhouse-server
     depends_on:
       - zookeeper
+    ports:
+      - "8123:8123"
     networks:
      - network_project
 
@@ -210,9 +212,10 @@ services:
       - clickhouse-node3
     networks:
       - network_project
-      
+
   kafka-0:
     image: bitnami/kafka:3.4
+    hostname: kafka_ugc
     ports:
       - "9094:9094"
     environment:
@@ -282,6 +285,15 @@ services:
     networks:
       - kafka_network
 
+  ugc-service:
+    container_name: ugc_service
+    build: ./ugc
+    env_file: .env
+    networks:
+     - kafka_network
+    ports:
+      - "5001:5001"
+
   kafka-ch-etl:
     build: ./ugc/etl
     container_name: kafka-ch-etl
@@ -291,7 +303,6 @@ services:
       - kafka-0
       - kafka-1
       - kafka-2
-      - kafka_ui
 
 volumes:
   db_data:

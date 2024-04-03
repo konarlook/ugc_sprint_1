@@ -17,6 +17,7 @@ class CommonSettings(_BaseSettings):
     """Base settings for service"""
 
     service_name: str = Field(default="ugc", description="Name of service")
+    log_path: str = Field(default="logs/ugc_logs.log", description="Path log")
 
 
 class AuthJWTSettings(_BaseSettings):
@@ -39,9 +40,14 @@ class AuthJWTSettings(_BaseSettings):
 
 class KafkaSettings(_BaseSettings):
     """Kafka settings for service"""
-
-    kafka_dsn: KafkaDsn | None = Field(default=None)
-    kafka_topic: str | None = Field(default=None)
+    kafka_host: str = Field(
+        default="localhost",
+        description="Kafka host",
+    )
+    kafka_port: int = Field(
+        default=9092,
+        description="Kafka port",
+    )
 
 
 class Settings(CommonSettings):

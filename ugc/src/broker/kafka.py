@@ -1,19 +1,29 @@
 from aiokafka import AIOKafkaProducer
-from .base import BaseBrokerProducer
+from pydantic import BaseModel
 
+from .base import BaseBrokerProducer
+from core.config import settings
 
 class KafkaBrokerProducer(BaseBrokerProducer):
-    def __init__(self, producer: AIOKafkaProducer):
-        self.producer = producer
+    """Kafka producer for sending messages to kafka topic"""
 
-    async def produce(self, topic: str, key: str, data):
-        await self.producer.send(
-            topic=topic, key=key.encode("utf-8"), value=data.json().encode("utf-8")
+    def __init__(self, client: AIOKafkaProducer):
+        self.client = client
+
+    async def produce(self, topic: str, message: BaseModel):
+        """Send message to kafka topic"""
+        await self.client.start()
+        await self.client.send(
+            topic=topic, value=message.model_dump_json().encode("utf-8")
         )
-
-
-kafka_producer: KafkaBrokerProducer | None = None
+        await self.client.stop()
 
 
 def get_kafka_producer() -> KafkaBrokerProducer:
-    return kafka_producer
+    """Get kafka producer"""
+    return KafkaBrokerProducer(
+        client=AIOKafkaProducer(
+            bootstrap_servers=f"{settings.kafka.kafka_host}:{settings.kafka.kafka_port}",
+            client_id='test'
+        )
+    )
