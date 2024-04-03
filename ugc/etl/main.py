@@ -5,9 +5,6 @@ from clickehouse_publisher import get_clickhouse_client
 from config import settings
 from constants import ASSOCIATION_TOPIC_TO_SCHEMA
 from kafka_consumer import get_kafka_consumer
-from logger import UGCLogger
-
-etl_logger = UGCLogger()
 
 
 def convert_msg_to_modeldata(message_value, topic_name):
@@ -22,6 +19,8 @@ def convert_msg_to_modeldata(message_value, topic_name):
 
 
 def consume_messages(consumer):
+    logging.info("ETL started.")
+
     topics_data = {
         'player_progress': {
             'message_count': 0,
@@ -36,12 +35,18 @@ def consume_messages(consumer):
             'rows_to_insert': [],
         },
     }
-    etl_logger.logger.info(f"ETL started.")
+
     for message in consumer:
         topic_name = message.topic
         logging.info(f'Get message from {topic_name}')
-        message_value = json.loads(message.value.decode('ascii'))
-        print(message_value)
+        try:
+            message_value = json.loads(message.value.decode('ascii'))
+        except Exception as e:
+            logging.error(
+                f'Error format.\n{str(e)}'
+                f'{topic_name}:\n{message.value}'
+            )
+            continue
 
         if not isinstance(message_value, dict):
             logging.error(
@@ -49,14 +54,15 @@ def consume_messages(consumer):
                 f'{topic_name}:\n{message_value}'
             )
             continue
+
         model_data = convert_msg_to_modeldata(message_value, topic_name)
         if model_data is None:
             continue
 
-        row_to_insert = list(dict(model_data).values())
+        row_to_insert = list(model_data.dict().values())
         topics_data[message.topic]['rows_to_insert'].append(row_to_insert)
         topics_data[message.topic]['message_count'] += 1
-        logging.info(f'Messages count {topics_data[message.topic]["message_count"]}')
+        logging.info(f'Messages count {topic_name}: {topics_data[message.topic]["message_count"]}')
 
         if topics_data[message.topic]['message_count'] >= settings.kafka_ch_etl_batch_size:
             logging.info(f'Prepare to bulk insert into {topic_name!r} table')
@@ -68,7 +74,6 @@ def consume_messages(consumer):
 
             clickhouse_client = get_clickhouse_client()
             try:
-                print(topics_data[message.topic]['rows_to_insert'])
                 clickhouse_client.execute(
                     query=sql_query,
                     params=topics_data[message.topic]['rows_to_insert'])
