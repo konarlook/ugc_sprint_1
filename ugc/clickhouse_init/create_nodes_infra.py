@@ -27,35 +27,35 @@ def create_tables_for_first_node():
         "(user_id UUID, movie_id UUID, event_dt DateTime, view_progress Int64, movie_duration Int64) "
         "ENGINE = Distributed('ugc_cluster', '', player_progress, rand());")
 
-    # create player_settings_event table
+    # create player_settings_events table
     client.execute(
-        "CREATE TABLE IF NOT EXISTS shard_db.player_settings_event "
+        "CREATE TABLE IF NOT EXISTS shard_db.player_settings_events "
         "(user_id UUID, movie_id UUID, event_dt DateTime, event_type String) "
-        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_settings_event', 'replica_1') "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_settings_events', 'replica_1') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
     client.execute(
-        "CREATE TABLE IF NOT EXISTS replica_db.player_settings_event "
+        "CREATE TABLE IF NOT EXISTS replica_db.player_settings_events "
         "(user_id UUID, movie_id UUID, event_dt DateTime, event_type String) "
-        "ENGINE = Distributed('ugc_cluster', '', player_settings_event, rand());")
+        "ENGINE = Distributed('ugc_cluster', '', player_settings_events, rand());")
 
-    # # create player_settings_event click_event
+    # # create player_settings_events click_events
     client.execute(
-        "CREATE TABLE IF NOT EXISTS shard_db.click_event "
+        "CREATE TABLE IF NOT EXISTS shard_db.click_events "
         "(user_id UUID, event_dt DateTime, current_url String NULL, destination_url String NULL) "
-        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_event', 'replica_1') "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_events', 'replica_1') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
     client.execute(
-        "CREATE TABLE IF NOT EXISTS replica_db.click_event "
+        "CREATE TABLE IF NOT EXISTS replica_db.click_events "
         "(user_id UUID, event_dt DateTime, current_url String NULL, destination_url String NULL) "
-        "ENGINE = Distributed('ugc_cluster', '', click_event, rand());")
+        "ENGINE = Distributed('ugc_cluster', '', click_events, rand());")
 
     shard_db_tables = client.execute('SHOW TABLES FROM shard_db')
-    if shard_db_tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+    if shard_db_tables != [('click_events',), ('player_progress',), ('player_settings_events',)]:
         logging.error("Required tables don't exist on first node (shard_db)!")
         raise Exception
 
     replica_db_tables = client.execute('SHOW TABLES FROM replica_db')
-    if replica_db_tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+    if replica_db_tables != [('click_events',), ('player_progress',), ('player_settings_events',)]:
         logging.error("Required tables don't exist on first node (replica_db)!")
         raise Exception
 
@@ -78,22 +78,22 @@ def create_tables_for_second_node():
         "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_progress', 'replica_2') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
-    # create player_settings_event table
+    # create player_settings_events table
     client.execute(
-        "CREATE TABLE IF NOT EXISTS replica_db.player_settings_event "
+        "CREATE TABLE IF NOT EXISTS replica_db.player_settings_events "
         "(user_id UUID, movie_id UUID, event_dt DateTime, event_type String) "
-        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_settings_event', 'replica_2') "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_settings_events', 'replica_2') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
-    # create click_event table
+    # create click_events table
     client.execute(
-        "CREATE TABLE IF NOT EXISTS replica_db.click_event "
+        "CREATE TABLE IF NOT EXISTS replica_db.click_events "
         "(user_id UUID, event_dt DateTime, current_url String NULL, destination_url String NULL) "
-        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_event', 'replica_2') "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_events', 'replica_2') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
     tables = client.execute('SHOW TABLES FROM replica_db')
-    if tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+    if tables != [('click_events',), ('player_progress',), ('player_settings_events',)]:
         logging.error("Required tables don't exist on second node (replica_db)!")
         raise Exception
 
@@ -116,22 +116,22 @@ def create_tables_for_third_node():
         "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_progress', 'replica_3') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
-    # create player_settings_event table
+    # create player_settings_events table
     client.execute(
-        "CREATE TABLE IF NOT EXISTS replica_db.player_settings_event "
+        "CREATE TABLE IF NOT EXISTS replica_db.player_settings_events "
         "(user_id UUID, movie_id UUID, event_dt DateTime, event_type String) "
-        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_settings_event', 'replica_3') "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/player_settings_events', 'replica_3') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
-    # create click_event table
+    # create click_events table
     client.execute(
-        "CREATE TABLE IF NOT EXISTS replica_db.click_event "
+        "CREATE TABLE IF NOT EXISTS replica_db.click_events "
         "(user_id UUID, event_dt DateTime, current_url String NULL, destination_url String NULL) "
-        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_event', 'replica_3') "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_events', 'replica_3') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
     tables = client.execute('SHOW TABLES FROM replica_db')
-    if tables != [('click_event',), ('player_progress',), ('player_settings_event',)]:
+    if tables != [('click_events',), ('player_progress',), ('player_settings_events',)]:
         logging.error("Required tables don't exist on third node (replica_db)!")
         raise Exception
 

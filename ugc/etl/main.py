@@ -5,7 +5,9 @@ from config import settings
 from clickehouse_publisher import get_clickhouse_client
 from kafka_consumer import get_kafka_consumer
 from constants import ASSOCIATION_TOPIC_TO_SCHEMA
+from logger import UGCLogger
 
+etl_logger = UGCLogger()
 
 def convert_msg_to_modeldata(message_value, topic_name):
     model_data_schema = ASSOCIATION_TOPIC_TO_SCHEMA[topic_name]
@@ -24,20 +26,21 @@ def consume_messages(consumer):
             'message_count': 0,
             'rows_to_insert': [],
         },
-        'player_settings_event': {
+        'player_settings_events': {
             'message_count': 0,
             'rows_to_insert': [],
         },
-        'click_event': {
+        'click_events': {
             'message_count': 0,
             'rows_to_insert': [],
         },
     }
-
+    etl_logger.logger.info(f"ETL started.")
     for message in consumer:
         topic_name = message.topic
         logging.info(f'Get message from {topic_name}')
         message_value = json.loads(message.value.decode('ascii'))
+        print(message_value)
 
         if not isinstance(message_value, dict):
             logging.error(

@@ -8,9 +8,9 @@ def get_kafka_consumer():
 
     kafka_consumer = KafkaConsumer(
         'player_progress',
-        'player_settings_event',
-        'click_event',
-        bootstrap_servers=['kafka-0:9092'],
+        'player_settings_events',
+        'click_events',
+        bootstrap_servers=['kafka_ugc:9092'],
         auto_offset_reset='earliest',
         group_id='ETL_to_Clickhouse',
     )

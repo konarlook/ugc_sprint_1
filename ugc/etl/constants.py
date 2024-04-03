@@ -6,6 +6,6 @@ from models import (
 
 ASSOCIATION_TOPIC_TO_SCHEMA = {
         'player_progress': PlayerProgressEventSchema,
-        'player_settings_event': PlayerSettingsEventSchema,
-        'click_event': ClickEventSchema
+        'player_settings_events': PlayerSettingsEventSchema,
+        'click_events': ClickEventSchema
     }
