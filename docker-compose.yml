@@ -163,7 +163,7 @@ services:
     container_name: zookeeper
     hostname: zookeeper
     networks:
-     - network_project
+      - kafka_network
 
   clickhouse-node1:
     image: clickhouse/clickhouse-server:23
@@ -176,7 +176,7 @@ services:
     ports:
       - "8123:8123"
     networks:
-     - network_project
+      - kafka_network
 
   clickhouse-node2:
     image: clickhouse/clickhouse-server:23
@@ -187,7 +187,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - network_project
+      - kafka_network
   
   clickhouse-node3:
     image: clickhouse/clickhouse-server:23
@@ -198,7 +198,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-      - network_project
+      - kafka_network
 
   clickhouse-init:
     build: ./ugc/clickhouse_init
@@ -211,7 +211,7 @@ services:
       - clickhouse-node2
       - clickhouse-node3
     networks:
-      - network_project
+      - kafka_network
 
   kafka-0:
     image: bitnami/kafka:3.4
@@ -297,6 +297,8 @@ services:
   kafka-ch-etl:
     build: ./ugc/etl
     container_name: kafka-ch-etl
+    networks:
+      - kafka_network
     env_file:
       - .env
     depends_on:

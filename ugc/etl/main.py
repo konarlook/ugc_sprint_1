@@ -1,16 +1,16 @@
 import json
 import logging
 
-from config import settings
 from clickehouse_publisher import get_clickhouse_client
-from kafka_consumer import get_kafka_consumer
+from config import settings
 from constants import ASSOCIATION_TOPIC_TO_SCHEMA
+from kafka_consumer import get_kafka_consumer
 
 
 def convert_msg_to_modeldata(message_value, topic_name):
     model_data_schema = ASSOCIATION_TOPIC_TO_SCHEMA[topic_name]
     try:
-        model_data = model_data_schema.model_validate(message_value)
+        model_data = model_data_schema(**message_value)
     except Exception as e:
         logging.error(f'{e.__class__.__name__}:\n{str(e)=}')
         return None
@@ -19,16 +19,18 @@ def convert_msg_to_modeldata(message_value, topic_name):
 
 
 def consume_messages(consumer):
+    logging.info("ETL started.")
+
     topics_data = {
         'player_progress': {
             'message_count': 0,
             'rows_to_insert': [],
         },
-        'player_settings_event': {
+        'player_settings_events': {
             'message_count': 0,
             'rows_to_insert': [],
         },
-        'click_event': {
+        'click_events': {
             'message_count': 0,
             'rows_to_insert': [],
         },
@@ -37,7 +39,14 @@ def consume_messages(consumer):
     for message in consumer:
         topic_name = message.topic
         logging.info(f'Get message from {topic_name}')
-        message_value = json.loads(message.value.decode('ascii'))
+        try:
+            message_value = json.loads(message.value.decode('ascii'))
+        except Exception as e:
+            logging.error(
+                f'Error format.\n{str(e)}'
+                f'{topic_name}:\n{message.value}'
+            )
+            continue
 
         if not isinstance(message_value, dict):
             logging.error(
@@ -50,11 +59,10 @@ def consume_messages(consumer):
         if model_data is None:
             continue
 
-        row_to_insert = list(dict(model_data).values())
-
+        row_to_insert = list(model_data.dict().values())
         topics_data[message.topic]['rows_to_insert'].append(row_to_insert)
         topics_data[message.topic]['message_count'] += 1
-        logging.info(f'Messages count {topics_data[message.topic]["message_count"]}')
+        logging.info(f'Messages count {topic_name}: {topics_data[message.topic]["message_count"]}')
 
         if topics_data[message.topic]['message_count'] >= settings.kafka_ch_etl_batch_size:
             logging.info(f'Prepare to bulk insert into {topic_name!r} table')
