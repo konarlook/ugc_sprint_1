@@ -13,6 +13,7 @@ def get_kafka_consumer():
         bootstrap_servers=['kafka_ugc:9092'],
         auto_offset_reset='earliest',
         group_id='ETL_to_Clickhouse',
+        enable_auto_commit=False
     )
     logging.info('KafkaConsumer created')
 
