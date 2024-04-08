@@ -18,6 +18,25 @@ services:
       - ../../.env
     ports:
       - '5433:5433'
+  
+  postgres:
+    container_name: postgres_benchmark
+    image: postgres:13
+    restart: always
+    env_file:
+      - ../../.env
+    ports: 
+      - '5434:5432'
+    environment:
+      POSTGRES_DB: bench_db
+      POSTGRES_USER: bench_user
+      POSTGRES_PASSWORD: bench_pass
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - postgres_bench_vol:/var/lib/postgres/data
+
+
 
 volumes:
   clickhouse_db:
+  postgres_bench_vol:
