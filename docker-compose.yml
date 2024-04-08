@@ -188,7 +188,7 @@ services:
       - zookeeper
     networks:
       - kafka_network
-  
+
   clickhouse-node3:
     image: clickhouse/clickhouse-server:23
     container_name: clickhouse-node3
@@ -306,6 +306,116 @@ services:
       - kafka-1
       - kafka-2
 
+  mongors1n1:
+    container_name: mongors1n1
+    image: mongo:7.0.8
+    command: mongod --shardsvr --replSet mongors1 --dbpath /data/db --port 27017
+    ports:
+      - 27017:27017
+    expose:
+      - "27017"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/mongo_cluster/data1:/data/db
+    networks:
+      - mongo_network
+
+  mongors1n2:
+    container_name: mongors1n2
+    image: mongo:7.0.8
+    command: mongod --shardsvr --replSet mongors1 --dbpath /data/db --port 27017
+    ports:
+      - 27027:27017
+    expose:
+      - "27017"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/mongo_cluster/data2:/data/db
+    networks:
+      - mongo_network
+
+  mongors1n3:
+    container_name: mongors1n3
+    image: mongo:7.0.8
+    command: mongod --shardsvr --replSet mongors1 --dbpath /data/db --port 27017
+    ports:
+      - 27037:27017
+    expose:
+      - "27017"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/mongo_cluster/data3:/data/db
+    networks:
+      - mongo_network
+
+  mongocfg1:
+    container_name: mongocfg1
+    image: mongo:7.0.8
+    command: mongod --configsvr --replSet mongors1conf --dbpath /data/db --port 27017
+    expose:
+      - "27017"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/mongo_cluster/config1:/data/db
+    networks:
+      - mongo_network
+
+  mongos1:
+    container_name: mongos1
+    image: mongo:7.0.8
+    depends_on:
+      - mongocfg1
+    command: mongos --configdb mongors1conf/mongocfg1:27017 --port 27017 --bind_ip_all
+    ports:
+      - 27019:27017
+    expose:
+      - "27017"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - mongo_network
+
+  setup_mongo_conf_serv:
+    image: mongo:7.0.8
+    networks:
+      - mongo_network
+    volumes:
+      - ./ugc/setup_mongo/manage_conf_serv.sh:/conf/manage_conf_serv.sh
+    command: [ "bash", "conf/manage_conf_serv.sh" ]
+    depends_on:
+      mongocfg1:
+        condition: service_started
+
+  setup_mongo_shard_serv:
+    image: mongo:7.0.8
+    networks:
+      - mongo_network
+    volumes:
+      - ./ugc/setup_mongo/manage_shard_serv.sh:/conf/manage_shard_serv.sh
+    command: [ "bash", "conf/manage_shard_serv.sh" ]
+    depends_on:
+      setup_mongo_conf_serv:
+        condition: service_completed_successfully
+      mongors1n1:
+        condition: service_started
+      mongors1n2:
+        condition: service_started
+      mongors1n3:
+        condition: service_started
+
+  setup_mongo_router_serv:
+    image: mongo:7.0.8
+    networks:
+      - mongo_network
+    volumes:
+      - ./ugc/setup_mongo/manage_router_add_shard.sh:/conf/manage_router_add_shard.sh
+    command: [ "bash", "conf/manage_router_add_shard.sh" ]
+    depends_on:
+      setup_mongo_shard_serv:
+        condition: service_completed_successfully
+      mongos1:
+        condition: service_started
+
 volumes:
   db_data:
   static_data:
@@ -321,4 +431,6 @@ networks:
   auth_network:
     driver: bridge
   kafka_network:
+    driver: bridge
+  mongo_network:
     driver: bridge
