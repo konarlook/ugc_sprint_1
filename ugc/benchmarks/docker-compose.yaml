@@ -35,8 +35,22 @@ services:
     volumes:
       - postgres_bench_vol:/var/lib/postgres/data
 
+  mongodb:
+    image: mongo
+    container_name: mongo_single_benchmark
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: bench_user
+      MONGO_INITDB_ROOT_PASSWORD: bench_pass
+      MONGO_INITDB_DATABASE: bench_db
+    ports: 
+      - '27018:27017'
+    volumes:
+      - mongo_single_bench_vol:/data
+    restart: "always"
+
 
 
 volumes:
   clickhouse_db:
   postgres_bench_vol:
+  mongo_single_bench_vol:

@@ -11,3 +11,37 @@ Vertica
 Insertion speed: 18,855.72 records/sec
  - Select test
 Select speed: 200,318.69 records/sec
+
+Postgres
+ - Insert 1.000.000 reviews
+Insertion speed: 5,119.19 records/sec
+ - Select 1.000.000 reviews
+Selecting speed: 41,290.92 records/sec
+ - Update 50.000 reviews
+Update speed: 432.64 records/sec
+
+ - Insert 1.000.000 bookmarks
+Insertion speed: 12,074.68 records/sec
+ - Select 1.000.000 bookmarks
+Selecting speed: 45,985.78 records/sec
+
+ - Insert 1.500.000 review ratings
+Insertion speed: 5,890.07 records/sec
+ - Select 1.500.000 review ratings
+Selecting speed: 47,132.05 records/sec
+
+Single Mongo
+ - Insert ... reviews
+Insertion speed: ... records/sec
+ - Select ... reviews
+Selecting speed: ... records/sec
+
+ - Insert ... bookmarks
+Insertion speed: ... records/sec
+ - Select ... bookmarks
+Selecting speed: ... records/sec
+
+ - Insert ... review ratings
+Insertion speed: ... records/sec
+ - Select ... review ratings
+Selecting speed: ... records/sec
