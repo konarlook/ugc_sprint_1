@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 
-from src.helpers import logger
-from src.helpers.backoff import backoff
+from helpers import logger
+from backoff import backoff
 
 kafka_logger = logger.UGCLogger()
 

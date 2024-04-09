@@ -34,16 +34,33 @@ Single Mongo
  - Insert 50.000 reviews
 Insertion speed: 561.78 records/sec
  - Select 50.000 reviews
-Selecting speed: 48366051 records/sec
+Selecting speed: # нужен тест
  - Update 75000 elements.
 Update speed: 530.03 records/sec
 
- - Insert 50.000 bookmarks
+ - Insert 500.000 bookmarks
 Insertion speed: 782.09 records/sec
  - Select 75.000 bookmarks
-Selecting speed: 75.112.893.98 records/sec
+Selecting speed: # нужен тест
 
- - Insert 50.000 review ratings
-Speed: 652.38 records/sec
- - Select ... review ratings
-Selecting speed: ... records/sec
+ - Insert 500.000 review ratings
+Insertion speed: 782 records/sec
+ - Select 500.000 review ratings
+Selecting speed: # нужен тест
+
+
+Mongo cluster
+ - Insert 500.000 reviews.
+Insertion speed: 288 records/sec
+ - Select 500.000 reviews.
+Speed: 64.390 records/sec
+
+- Insert 500.000 bookmarks.
+Insertion speed: 313 records/sec
+ - Select 500000 bookmarks.
+Speed: 92491 records/sec
+
+ - Insert 500.000 review_ratings
+Speed: 300.94 records/sec
+ - Select 500000 reviews ratings.
+Speed: 86625 records/sec
