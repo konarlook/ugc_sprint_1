@@ -43,7 +43,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: bench_pass
       MONGO_INITDB_DATABASE: bench_db
     ports: 
-      - '27018:27017'
+      - '27019:27017'
     volumes:
       - mongo_single_bench_vol:/data
     restart: "always"

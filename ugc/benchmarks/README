@@ -31,17 +31,19 @@ Insertion speed: 5,890.07 records/sec
 Selecting speed: 47,132.05 records/sec
 
 Single Mongo
- - Insert ... reviews
-Insertion speed: ... records/sec
- - Select ... reviews
-Selecting speed: ... records/sec
+ - Insert 50.000 reviews
+Insertion speed: 561.78 records/sec
+ - Select 50.000 reviews
+Selecting speed: 48366051 records/sec
+ - Update 75000 elements.
+Update speed: 530.03 records/sec
 
- - Insert ... bookmarks
-Insertion speed: ... records/sec
- - Select ... bookmarks
-Selecting speed: ... records/sec
+ - Insert 50.000 bookmarks
+Insertion speed: 782.09 records/sec
+ - Select 75.000 bookmarks
+Selecting speed: 75.112.893.98 records/sec
 
- - Insert ... review ratings
-Insertion speed: ... records/sec
+ - Insert 50.000 review ratings
+Speed: 652.38 records/sec
  - Select ... review ratings
 Selecting speed: ... records/sec
