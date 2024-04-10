@@ -12,55 +12,47 @@ Insertion speed: 18,855.72 records/sec
  - Select test
 Select speed: 200,318.69 records/sec
 
+
 Postgres
- - Insert 1.000.000 reviews
-Insertion speed: 5,119.19 records/sec
- - Select 1.000.000 reviews
-Selecting speed: 41,290.92 records/sec
- - Update 50.000 reviews
-Update speed: 432.64 records/sec
+ - Reviews
+ -- Insert 1.000.000 reviews. Speed: 5.119 records/sec
+ -- Select 1.000.000 reviews. Speed: 41.290 records/sec
+ -- Update 50.000 reviews. Speed: 432 records/sec
 
- - Insert 1.000.000 bookmarks
-Insertion speed: 12,074.68 records/sec
- - Select 1.000.000 bookmarks
-Selecting speed: 45,985.78 records/sec
+ - Bookmarks
+ -- Insert 1.000.000 bookmarks. Speed: 12.074 records/sec
+ -- Select 1.000.000 bookmarks. Speed: 45.985 records/sec
 
- - Insert 1.500.000 review ratings
-Insertion speed: 5,890.07 records/sec
- - Select 1.500.000 review ratings
-Selecting speed: 47,132.05 records/sec
+ - Reviews ratings
+ -- Insert 1.500.000 review ratings. Speed: 5.890 records/sec
+ -- Select 1.500.000 review ratings. Speed: 47.132 records/sec
+
 
 Single Mongo
- - Insert 50.000 reviews
-Insertion speed: 561.78 records/sec
- - Select 50.000 reviews
-Selecting speed: # нужен тест
- - Update 75000 elements.
-Update speed: 530.03 records/sec
+ - Reviews
+ -- Insert 50.000 reviews. Speed: 1.019 records/sec
+ -- Select 100.000 reviews. Speed: 73.876 records/sec
+ -- Update 100.000 reviews. Speed: 915 records/sec
 
- - Insert 500.000 bookmarks
-Insertion speed: 782.09 records/sec
- - Select 75.000 bookmarks
-Selecting speed: # нужен тест
+ - Bookmarks
+ -- Insert 50.000 bookmarks: Speed: 1.179 records/sec
+ -- Select 50.000 bookmarks: Speed:  83.555 records/sec
 
- - Insert 500.000 review ratings
-Insertion speed: 782 records/sec
- - Select 500.000 review ratings
-Selecting speed: # нужен тест
+ - Reviews ratings
+ -- Insert 50.000 reviews ratings: Speed: 1.173 records/sec
+ -- Select 50.000 reviews ratings: Speed: 115.121 records/sec
 
 
 Mongo cluster
- - Insert 500.000 reviews.
-Insertion speed: 288 records/sec
- - Select 500.000 reviews.
-Speed: 64.390 records/sec
+ - Reviews 
+ -- Insert 50.000 reviews. Speed:  273 records/sec
+ -- Select 50.000 reviews. Speed:  69.315 records/sec
+ -- Update 50.000 reviews. Speed: 266 records/sec
 
-- Insert 500.000 bookmarks.
-Insertion speed: 313 records/sec
- - Select 500000 bookmarks.
-Speed: 92491 records/sec
+ - Bookmarks
+ -- Insert 50.000 bookmarks: Speed: 290 records/sec
+ -- Select 50.000 bookmarks: Speed:  85.241 records/sec
 
- - Insert 500.000 review_ratings
-Speed: 300.94 records/sec
- - Select 500000 reviews ratings.
-Speed: 86625 records/sec
+ - Reviews ratings
+ -- Insert 50.000 reviews ratings: Speed: 297 records/sec
+ -- Select 50.000 reviews ratings: Speed: 77.391 records/sec
