@@ -35,12 +35,12 @@ Single Mongo
  -- Update 100.000 reviews. Speed: 915 records/sec
 
  - Bookmarks
- -- Insert 50.000 bookmarks: Speed: 1.179 records/sec
- -- Select 50.000 bookmarks: Speed: 83.555 records/sec
+ -- Insert 50.000 bookmarks. Speed: 1.179 records/sec
+ -- Select 50.000 bookmarks. Speed: 83.555 records/sec
 
  - Reviews ratings
- -- Insert 50.000 reviews ratings: Speed: 1.173 records/sec
- -- Select 50.000 reviews ratings: Speed: 115.121 records/sec
+ -- Insert 50.000 reviews ratings. Speed: 1.173 records/sec
+ -- Select 50.000 reviews ratings. Speed: 115.121 records/sec
 
 
 Mongo cluster
@@ -50,9 +50,9 @@ Mongo cluster
  -- Update 50.000 reviews. Speed: 266 records/sec
 
  - Bookmarks
- -- Insert 50.000 bookmarks: Speed: 290 records/sec
- -- Select 50.000 bookmarks: Speed: 85.241 records/sec
+ -- Insert 50.000 bookmarks. Speed: 290 records/sec
+ -- Select 50.000 bookmarks. Speed: 85.241 records/sec
 
  - Reviews ratings
- -- Insert 50.000 reviews ratings: Speed: 297 records/sec
- -- Select 50.000 reviews ratings: Speed: 77.391 records/sec
+ -- Insert 50.000 reviews ratings. Speed: 297 records/sec
+ -- Select 50.000 reviews ratings. Speed: 77.391 records/sec
