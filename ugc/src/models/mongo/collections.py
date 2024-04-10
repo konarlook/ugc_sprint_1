@@ -2,7 +2,8 @@ import datetime
 from enum import IntEnum
 from uuid import UUID
 
-from beanie import Document
+from beanie import Document, Indexed
+from pydantic import Field
 
 
 class ReviewScore(IntEnum):
@@ -11,21 +12,21 @@ class ReviewScore(IntEnum):
 
 
 class Review(Document):
-    user_id: UUID
-    movie_id: UUID
+    user_id: Indexed(str)
+    movie_id: str
     score: int
     text: str
-    review_df: datetime.datetime
+    created_at: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     class Settings:
-        name = 'rewiew'
+        name = 'review'
         use_state_management = True
 
 
 class Bookmark(Document):
-    user_id: UUID
+    user_id: Indexed(str)
     movie_id: UUID
-    bookmark_df: datetime.datetime
+    dt: datetime.datetime
 
     class Settings:
         name = 'bookmark'
@@ -33,10 +34,10 @@ class Bookmark(Document):
 
 
 class ReviewRating(Document):
-    user_id: UUID
-    review_id: UUID
+    user_id: str
+    review_id: Indexed(str)
     score: ReviewScore
-    review_rating_df: datetime.datetime
+    dt: datetime.datetime
 
     class Settings:
         name = 'review_rating'

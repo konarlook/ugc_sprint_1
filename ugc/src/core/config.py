@@ -53,6 +53,7 @@ class KafkaSettings(_BaseSettings):
 class MongoDBSettings(_BaseSettings):
     """Mongo settings for service"""
     mongodb_uri: MongoDsn = Field(
+        default="mongodb://localhost:27019",
         description="Mongo url",
     )
     mongodb_db_name: str = Field(default="ugc", description="Mongo db name")

@@ -1,7 +1,6 @@
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from core.config import settings
 from db.mongo import get_mongo_client
 from helpers import logger
 from models.mongo.collections import Review, ReviewRating, Bookmark
@@ -14,8 +13,7 @@ class MongoDBInit:
         self.client = mongodb_client
 
     async def create_collections(self):
-        self.client.db_name = settings.mongodb.mongodb_db_name
-        await init_beanie(database=self.client.db_name, document_models=[Review, Bookmark, ReviewRating])
+        await init_beanie(database=self.client.ugc, document_models=[Review, ReviewRating, Bookmark])
 
 
 def get_mongodb_init() -> MongoDBInit:
