@@ -135,8 +135,14 @@ services:
     env_file: .env
     networks:
      - kafka_network
+     - mongo_network
     ports:
       - "5001:5001"
+    depends_on:
+      mongos1:
+        condition: service_started
+      setup_mongo_router_serv:
+        condition: service_completed_successfully
 
   kafka-ch-etl:
     build: ./ugc/etl
