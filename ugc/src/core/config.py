@@ -1,5 +1,5 @@
 from pathlib import Path
-from pydantic import Field, KafkaDsn
+from pydantic import Field, KafkaDsn, MongoDsn
 from pydantic_settings import BaseSettings
 
 BASE_DIR = Path(__file__).resolve().parents[4]
@@ -50,11 +50,21 @@ class KafkaSettings(_BaseSettings):
     )
 
 
+class MongoDBSettings(_BaseSettings):
+    """Mongo settings for service"""
+    mongodb_uri: MongoDsn = Field(
+        default="mongodb://localhost:27019",
+        description="Mongo url",
+    )
+    mongodb_db_name: str = Field(default="ugc", description="Mongo db name")
+
+
 class Settings(CommonSettings):
     """Main class for combine settings"""
 
     auth_jwt: AuthJWTSettings = AuthJWTSettings()
     kafka: KafkaSettings = KafkaSettings()
+    mongodb: MongoDBSettings = MongoDBSettings()
 
 
 settings = Settings()

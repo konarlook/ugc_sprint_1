@@ -134,11 +134,15 @@ services:
     build: ./ugc
     env_file: .env
     networks:
-      - kafka_network
-    volumes:
-      - ugc-service:/apt/logs
+     - kafka_network
+     - mongo_network
     ports:
       - "5001:5001"
+    depends_on:
+      mongos1:
+        condition: service_started
+      setup_mongo_router_serv:
+        condition: service_completed_successfully
 
   kafka-ch-etl:
     build: ./ugc/etl
@@ -262,79 +266,10 @@ services:
       mongos1:
         condition: service_started
 
-  nginx:
-    container_name: nginx
-    image: nginx:1.19.2
-    env_file: .env
-    ports:
-      - "${NGINX_PORT}:${NGINX_PORT}"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - /tmp/logs/nginx/:/var/log/nginx/
-    networks:
-      - mongo_network
-
-  elasticsearch:
-    image: elasticsearch:8.10.2
-    environment:
-      - discovery.type=single-node
-    volumes:
-      - elastic_volume:/var/lib/elasticsearch/data/
-    ports:
-      - "9200:9200"
-    networks:
-      - mongo_network
-
-  kibana:
-    image: kibana:8.10.2
-    ports:
-      - "5601:5601"
-    environment:
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    networks:
-      - mongo_network
-
-  logstash:
-    image: logstash:8.10.2
-    depends_on:
-      - elasticsearch
-    environment:
-      XPACK_MONITORING_ENABLED: "false"
-      ES_HOST: "elasticsearch:9200"
-    ports:
-      - "5044:5044/udp"
-    volumes:
-      - ./deploy/logstash.conf:/config/logstash.conf:ro
-      - /tmp/logs/nginx/:/var/log/nginx/:ro
-    command: logstash -f /config/logstash.conf
-    networks:
-      - mongo_network
-
-  filebeat:
-    image: filebeat:8.10.2
-    volumes:
-      - /tmp/logs/nginx:/var/log/nginx:ro
-      - ./deploy/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
-    depends_on:
-      - ugc-service
-      - nginx
-      - logstash
-      - elasticsearch
-      - kibana
-    links:
-      - logstash
-    networks:
-      - mongo_network
-
 volumes:
   kafka_0_data:
   kafka_1_data:
   kafka_2_data:
-  elastic_volume:
-  ugc-service:
 
 networks:
   network_project:
