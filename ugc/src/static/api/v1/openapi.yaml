@@ -120,6 +120,16 @@ paths:
       responses:
         '200':
           description: "Successful writing"
+        '400':
+          description: "Invalid request, missing required parameters"
+        '401':
+          description: "Unauthorized access, invalid or missing JWT token"
+        '403':
+          description: "Access denied, insufficient permissions to perform the operation"
+        '404':
+          description: "Specified resource not found"
+        '500':
+          description: "Internal server error"
 
 
 components:
