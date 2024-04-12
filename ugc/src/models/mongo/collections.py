@@ -25,7 +25,7 @@ class Review(Document):
 
 class Bookmark(Document):
     user_id: Indexed(str)
-    movie_id: UUID
+    movie_id: str
     dt: datetime.datetime
 
     class Settings:
