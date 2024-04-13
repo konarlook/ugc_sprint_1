@@ -1,4 +1,3 @@
-from beanie import Document
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from db.mongo import get_mongo_client
@@ -15,6 +14,12 @@ class MongoBeanieRepository(BaseRepository):
     async def read(self, document: dict, skip: int = 0, limit: int = 100):
         response = self.mongo_collection.find(document).skip(skip).limit(limit)
         return await response.to_list(length=None)
+
+    async def update(self, filter_data: dict, update_data: dict):
+        await self.mongo_collection.find_one_and_update(
+            filter_data,
+            {'$set': update_data}
+        )
 
     async def delete(self, document: dict):
         await self.mongo_collection.delete_one(document)
