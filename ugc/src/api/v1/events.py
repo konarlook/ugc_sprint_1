@@ -6,7 +6,6 @@ from core.constants import TopicNames
 from helpers.access import check_access_token
 from models.click import ClickEvent
 from models.player import PlayerProgress, EventsNames, PlayerSettingEvents
-from repositories.mongo_repositorty import get_mongo_repo
 from services.click_event import get_click_service, ClickService
 from services.player_events import get_player_service, PlayerService
 
@@ -45,51 +44,3 @@ async def post_player_progress(user_info: dict = None):
     data_model = PlayerProgress(**request_data)
     await player_service.send_message(topic_name=TopicNames.player_progress, message_model=data_model)
     return jsonify({'message': f'Message sent'}), HTTPStatus.OK
-
-
-# TODO: Add check_access_token
-@routers.route("/add_bookmark", methods=["POST"])
-async def post_add_bookmark():
-    request_data = request.args.to_dict()
-    # TODO: add bookmark service
-    mongo_repo = get_mongo_repo("bookmark")
-    await mongo_repo.create(request_data)
-    return jsonify({'message': f'Document posted'}), HTTPStatus.OK
-
-
-@routers.route("/delete_bookmark", methods=["DELETE"])
-async def delete_bookmark():
-    request_data = request.args.to_dict()
-    mongo_repo = get_mongo_repo("bookmark")
-    await mongo_repo.delete(request_data)
-    return jsonify({'message': f'Document deleted'}), HTTPStatus.OK
-
-
-@routers.route("/get_bookmark", methods=["GET"])
-async def get_bookmark():
-    request_data = request.args.to_dict()
-    mongo_repo = get_mongo_repo("bookmark")
-    response = await mongo_repo.read({"user_id": request_data['user_id']})
-    return jsonify(str(response)), HTTPStatus.OK
-
-
-@routers.route("/add_review", methods=["POST"])
-async def add_review():
-    request_data = request.args.to_dict()
-    mongo_repo = get_mongo_repo("review")
-    await mongo_repo.create(request_data)
-    return jsonify({'message': f'Document posted'}), HTTPStatus.OK
-
-
-@routers.route("/update_review", methods=["POST"])
-async def update_review():
-    request_data = request.args.to_dict()
-    mongo_repo = get_mongo_repo("review")
-    await mongo_repo.update(
-        filter_data={
-            "user_id": request_data["user_id"],
-            "review_id": request_data["review_id"],
-        },
-        update_data={"score": request_data["score"]}
-    )
-    return jsonify({'message': f'Document posted'}), HTTPStatus.OK

@@ -16,7 +16,7 @@ class Review(Document):
     movie_id: str
     score: int
     text: str
-    is_delete: bool = False
+    is_delete: bool = Field(default=False)
     dt: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     class Settings:
@@ -27,7 +27,7 @@ class Review(Document):
 class Bookmark(Document):
     user_id: Indexed(str)
     movie_id: str
-    is_delete: bool = False
+    is_delete: bool = Field(default=False)
     dt: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     class Settings:
@@ -39,7 +39,7 @@ class ReviewRating(Document):
     user_id: str
     review_id: Indexed(str)
     score: ReviewScore
-    is_delete: bool = False
+    is_delete: bool = Field(default=False)
     dt: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     class Settings:
