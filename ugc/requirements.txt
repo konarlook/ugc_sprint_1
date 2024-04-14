@@ -15,5 +15,6 @@ aiokafka==0.10.0
 gunicorn==21.2.0
 uvicorn==0.27.1
 gevent==24.2.1
+fast-depends==2.4.2
 
 beanie==1.25.0

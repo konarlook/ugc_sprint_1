@@ -2,7 +2,6 @@ from flask import Flask
 from flask_swagger_ui import get_swaggerui_blueprint
 
 from api.v1.events import routers as event_routers
-from api.v1.feedback import router as feedback_routers
 from helpers.kafka_init import get_kafka_init, KafkaInit
 
 SWAGGER_URL = "/ugc/api/openapi"
@@ -26,7 +25,7 @@ def create_app():
 
     flask_application.register_blueprint(swagger_blueprint)
     flask_application.register_blueprint(event_routers)
-    flask_application.register_blueprint(feedback_routers)
+    # flask_application.register_blueprint(feedback_routers)
 
     init_kafka()
 
