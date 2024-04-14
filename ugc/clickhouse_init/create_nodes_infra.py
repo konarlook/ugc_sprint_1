@@ -49,6 +49,39 @@ def create_tables_for_first_node():
         "(user_id UUID, event_dt DateTime, current_url String NULL, destination_url String NULL) "
         "ENGINE = Distributed('ugc_cluster', '', click_events, rand());")
 
+    # # create bookmarks
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS shard_db.bookmarks "
+        "(user_id UUID, movie_id UUID, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/bookmarks', 'replica_1') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.bookmarks "
+        "(user_id UUID, movie_id UUID, is_delete Bool, event_dt DateTime) "
+        "ENGINE = Distributed('ugc_cluster', '', bookmarks, rand());")
+
+    # create review
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS shard_db.reviews "
+        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/reviews', 'replica_1') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.reviews "
+        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "ENGINE = Distributed('ugc_cluster', '', reviews, rand());")
+
+    # create review_rating
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS shard_db.review_ratings "
+        "(user_id UUID, review_id UUID, score Int8, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/review_ratings', 'replica_1') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.review_ratings "
+        "(user_id UUID, review_id UUID, score Int8, is_delete Bool, event_dt DateTime) "
+        "ENGINE = Distributed('ugc_cluster', '', review_ratings, rand());")
+
     shard_db_tables = client.execute('SHOW TABLES FROM shard_db')
     if shard_db_tables != [('click_events',), ('player_progress',), ('player_settings_events',)]:
         logging.error("Required tables don't exist on first node (shard_db)!")
@@ -92,6 +125,27 @@ def create_tables_for_second_node():
         "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_events', 'replica_2') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
+    # create bookmarks table
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.bookmarks "
+        "(user_id UUID, movie_id UUID, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/bookmarks', 'replica_2') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+
+    # create review table
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.reviews "
+        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/reviews', 'replica_2') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+
+    # create review_rating table
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.review_ratings "
+        "(user_id UUID, review_id UUID, score Int8, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/review_ratings', 'replica_2') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+
     tables = client.execute('SHOW TABLES FROM replica_db')
     if tables != [('click_events',), ('player_progress',), ('player_settings_events',)]:
         logging.error("Required tables don't exist on second node (replica_db)!")
@@ -128,6 +182,27 @@ def create_tables_for_third_node():
         "CREATE TABLE IF NOT EXISTS replica_db.click_events "
         "(user_id UUID, event_dt DateTime, current_url String NULL, destination_url String NULL) "
         "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/click_events', 'replica_3') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+
+    # create bookmarks table
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.bookmarks "
+        "(user_id UUID, movie_id UUID, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/bookmarks', 'replica_3') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+
+    # create review table
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.reviews "
+        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/reviews', 'replica_3') "
+        "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
+
+    # create review_rating table
+    client.execute(
+        "CREATE TABLE IF NOT EXISTS replica_db.review_ratings "
+        "(user_id UUID, review_id UUID, score Int8, is_delete Bool, event_dt DateTime) "
+        "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/review_ratings', 'replica_3') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
     tables = client.execute('SHOW TABLES FROM replica_db')
