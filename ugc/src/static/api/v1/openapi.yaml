@@ -5,9 +5,16 @@ info:
   version: "1.0.0"
 servers:
   - url: /ugc/
+tags:
+  - name: events
+    description: "Event data for analysis users actions"
+  - name: feedback
+    description: "API for working with users increment"
 paths:
   /click_event/{event_type}:
     post:
+      tags:
+        - events
       summary: "Post clicking event"
       security:
         - cookieAuth: [ ]
@@ -47,6 +54,8 @@ paths:
 
   /player_event/{event_type}:
     post:
+      tags:
+        - events
       summary: "Post videoplayer event"
       security:
         - cookieAuth: [ ]
@@ -87,6 +96,8 @@ paths:
   /review/:
     post:
       summary: "Post review from user to film-work"
+      tags:
+        - feedback
       security:
         - cookieAuth: [ ]
       parameters:
@@ -130,6 +141,14 @@ paths:
           description: "Specified resource not found"
         '500':
           description: "Internal server error"
+
+    get:
+      summary: "Getting all "
+      operationId:
+      parameters:
+        -
+      responses:
+
 
 
 components:

@@ -47,7 +47,8 @@ async def delete_review(
 @inject
 @check_access_token
 async def update_review(
-    user_info: dict = None, review_service: ReviewService = Depends(get_review_service)
+    user_info: dict = None,
+    review_service: ReviewService = Depends(get_review_service),
 ):
     """Update self review on film-work."""
     pass
