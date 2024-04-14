@@ -34,6 +34,7 @@ def select_test():
 
     second_result = second_client.execute('SELECT * FROM shard_db.player_progress')
     logging.info(f'{second_result=}')
+    print(f'{second_result=}')
     if first_result == second_result:
         logging.info('Test successfully passed!')
     else:
