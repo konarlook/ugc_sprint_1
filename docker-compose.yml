@@ -116,8 +116,8 @@ services:
       - static_data:/app/static
       - media_data:/app/media
     networks:
-     - network_project
-     - auth_network
+      - network_project
+      - auth_network
     depends_on:
       - backend
       - fastapi
