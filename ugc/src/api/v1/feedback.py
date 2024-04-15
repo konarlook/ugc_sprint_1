@@ -1,7 +1,8 @@
+import json
 from http import HTTPStatus
 
 from beanie import Document
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 from fast_depends import inject, Depends
 
 from helpers.access import check_access_token
@@ -36,7 +37,23 @@ async def get_reviews(
     review_service: ReviewService = Depends(get_review_service),
 ):
     """API for getting all reviews on film-work."""
-    pass
+    request_data: dict = request.args.to_dict()
+
+    if "page_size" not in request_data:
+        page_size = 50
+    else:
+        page_size = request_data["page_size"]
+    if "page_number" not in request_data:
+        page_number = 1
+    else:
+        page_number = request_data["page_number"]
+
+    response = await review_service.read(
+        document={"movie_id": str(request_data["movie_id"])},
+        skip=(page_number - 1) * page_size,
+        limit=page_size,
+    )
+    return Response(json.dumps(response, default=str), mimetype="application/json")
 
 
 @router.route("/review", methods=["DELETE"])
