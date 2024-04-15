@@ -13,7 +13,9 @@ class MongoDBInit:
         self.client = mongodb_client
 
     async def create_collections(self):
-        await init_beanie(database=self.client.ugc, document_models=[Review, ReviewRating, Bookmark])
+        await init_beanie(
+            database=self.client.ugc, document_models=[Review, ReviewRating, Bookmark]
+        )
 
 
 def get_mongodb_init() -> MongoDBInit:

@@ -22,7 +22,7 @@ paths:
         - in: cookie
           name: access-token
           description: "Access token from cookie"
-          required: true
+          required: false
           schema:
             type: string
         - name: event_type
@@ -63,7 +63,7 @@ paths:
         - in: cookie
           name: access-token
           description: "Access token from cookie"
-          required: true
+          required: false
           schema:
             type: string
         - name: event_type
@@ -104,7 +104,7 @@ paths:
         - in: cookie
           name: access-token
           description: "Access token from cookie"
-          required: true
+          required: false
           schema:
             type: string
         - name: text
@@ -142,12 +142,7 @@ paths:
         '500':
           description: "Internal server error"
 
-    get:
-      summary: "Getting all "
-      operationId:
-      parameters:
-        -
-      responses:
+
 
 
 

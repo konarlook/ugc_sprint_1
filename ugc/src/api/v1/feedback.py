@@ -1,9 +1,12 @@
 from http import HTTPStatus
+
+from beanie import Document
 from flask import Blueprint, request, jsonify
 from fast_depends import inject, Depends
 
 from helpers.access import check_access_token
-from services.review import ReviewService, get_review_service
+from models.mongo import collections
+from services.feedback.review import ReviewService, get_review_service
 
 router = Blueprint("feedback", __name__, url_prefix="/ugc")
 
@@ -17,7 +20,11 @@ async def post_review(
 ):
     """API for post user review on film-work."""
     request_data: dict = request.args.to_dict()
-    review_service.create(document=request_data)
+    request_data["user_id"] = user_info.get("sub")
+    review: Document = collections.Review(**request_data)
+    await review_service.create(
+        document=review.dict(),
+    )
     return jsonify({"message": "Successful writing"}), HTTPStatus.OK
 
 
