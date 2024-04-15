@@ -95,7 +95,7 @@ async def delete_review(
     return jsonify({"message": "Successful writing"}), HTTPStatus.OK
 
 
-@router.route("/review", methods=["UPDATE"])
+@router.route("/review", methods=["PUT"])
 @inject
 @check_access_token
 async def update_review(
@@ -103,4 +103,19 @@ async def update_review(
     review_service: ReviewService = Depends(get_review_service),
 ):
     """Update self review on film-work."""
-    pass
+    request_data: dict = request.args.to_dict()
+    new_data = dict()
+    if "text" in request_data:
+        new_data["text"] = str(request_data["text"])
+    if "score" in request_data:
+        new_data["score"] = int(request_data["score"])
+    await review_service.update(
+        filter_data={
+            "user_id": str(user_info.get("sub")),
+            "movie_id": str(request_data.get("movie_id")),
+            "is_delete": False,
+        },
+        update_data=new_data,
+    )
+
+    return jsonify({"message": "Successful writing"}), HTTPStatus.OK
