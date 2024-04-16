@@ -31,7 +31,8 @@ System_Boundary(ugc_service, "UGC Service") {
     Container(ugc_web_app, "UGC Web App")
     ContainerDb(ugc_db_kafka, "Kafka")
     ContainerDb(ugc_db_mongo, "MongoDB")
-    Container(ugc_etl_click, "ETL ClickHouse")
+    Container(ugc_etl_click_kafka, "ETL ClickHouse (Kafka)")
+    Container(ugc_etl_click_mongo, "ETL ClickHouse (MongoDB)")
     ContainerDb(ClickHouse_db, "ClickHouse")
 }
 
@@ -66,10 +67,11 @@ Rel(user, ugc_web_app, "Timestamps, Likes, Comments, Bookmarks")
 Rel(admin, ugc_web_app, "")
 
 Rel(ugc_web_app, ugc_db_kafka, "")
-Rel(ugc_db_kafka, ugc_etl_click, "")
-Rel(ugc_etl_click, ClickHouse_db, "")
+Rel(ugc_db_kafka, ugc_etl_click_kafka, "")
+Rel(ugc_etl_click_kafka, ClickHouse_db, "")
 
 Rel(ugc_web_app, ugc_db_mongo, "")
-Rel(ugc_db_mongo, ugc_web_app, "")
+Rel(ugc_db_mongo, ugc_etl_click_mongo, "")
+Rel(ugc_etl_click_mongo, ClickHouse_db, "")
 
 @enduml
