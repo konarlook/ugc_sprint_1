@@ -6,7 +6,7 @@ from repositories.base import BaseRepository
 
 class MongoBeanieRepository(BaseRepository):
     def __init__(self, client: AsyncIOMotorClient, collection: str):
-        self.mongo_collection = client['ugc'][collection]
+        self.mongo_collection = client["ugc"][collection]
 
     async def create(self, document: dict):
         await self.mongo_collection.insert_one(document)
@@ -17,8 +17,7 @@ class MongoBeanieRepository(BaseRepository):
 
     async def update(self, filter_data: dict, update_data: dict):
         await self.mongo_collection.find_one_and_update(
-            filter_data,
-            {'$set': update_data}
+            filter_data, {"$set": update_data}
         )
 
     async def delete(self, document: dict):
