@@ -50,3 +50,18 @@ class ReviewRating(Document):
     class Settings:
         name = "review_rating"
         use_state_management = True
+
+
+class Like(Document):
+    user_id: Indexed(str)
+    movie_id: str
+    review_id: Indexed(str)
+    comment_id: str
+    is_delete: bool = Field(default=False)
+    dt: datetime.datetime = Field(
+        default_factory=lambda: datetime.datetime.now(datetime.timezone.utc)
+    )
+
+    class Settings:
+        name = "like"
+        use_state_management = True

@@ -2,9 +2,8 @@ import json
 from http import HTTPStatus
 
 from beanie import Document
-from flask import Blueprint, request, jsonify, Response
-from fast_depends import inject, Depends
-
+from fast_depends import Depends, inject
+from flask import Blueprint, Response, jsonify, request
 from helpers.access import check_access_token
 from models.mongo import collections
 from services.feedback.review import ReviewService, get_review_service

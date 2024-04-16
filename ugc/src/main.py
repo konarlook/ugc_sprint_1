@@ -1,12 +1,11 @@
 import asyncio
 
-from flask import Flask
-from flask_swagger_ui import get_swaggerui_blueprint
-
 from api.v1.events import routers as event_routers
 from api.v1.feedback import router as feedback_routers
-from helpers.kafka_init import get_kafka_init, KafkaInit
-from helpers.mongo_init import get_mongodb_init, MongoDBInit
+from flask import Flask
+from flask_swagger_ui import get_swaggerui_blueprint
+from helpers.kafka_init import KafkaInit, get_kafka_init
+from helpers.mongo_init import MongoDBInit, get_mongodb_init
 
 SWAGGER_URL = "/ugc/api/openapi"
 API_URL = "/static/api/v1/openapi.yaml"
