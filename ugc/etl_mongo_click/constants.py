@@ -13,5 +13,5 @@ ASSOCIATION_COLLECTION_TO_SCHEMA = {
 ASSOCIATION_COLLECTION_TO_CH_TABLE = {
     'review': 'reviews',
     'bookmark': 'bookmarks',
-    'review_rating': 'reviews_ratings'
+    'review_rating': 'review_ratings'
 }

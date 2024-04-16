@@ -8,6 +8,8 @@ from config import settings
 def get_clickhouse_client():
     logging.info('Prepare to create Clickhouse client')
 
+    print()
+
     clickhouse_client: Client = Client(
         host=settings.clickhouse_host_for_etl,
         user=settings.clickhouse_username,
