@@ -19,7 +19,6 @@ services:
       - zookeeper
     ports:
       - "8123:8123"
-      - '9000:9000'
     networks:
       - kafka_network
 
@@ -164,11 +163,11 @@ services:
       - kafka_network
     env_file:
       - .env
-    # depends_on:
-    #   setup_mongo_router_serv:
-    #     condition: service_completed_successfully
-    #   clickhouse-init:
-    #     condition: service_completed_successfully
+    depends_on:
+      setup_mongo_router_serv:
+        condition: service_completed_successfully
+      clickhouse-init:
+        condition: service_completed_successfully
 
   mongors1n1:
     container_name: mongors1n1

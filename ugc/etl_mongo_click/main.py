@@ -4,10 +4,10 @@ from time import sleep
 
 from pymongo import ASCENDING
 
-from clickehouse_publisher import get_clickhouse_client
-from config import settings
 from constants import ASSOCIATION_COLLECTION_TO_SCHEMA, ASSOCIATION_COLLECTION_TO_CH_TABLE
+from clickehouse_client import get_clickhouse_client
 from mongo_client import get_mongo_client
+from config import settings
 
 
 def convert_document_to_modeldata(document, colection_name):
