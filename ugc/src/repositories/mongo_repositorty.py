@@ -26,6 +26,9 @@ class MongoBeanieRepository(BaseRepository):
     async def delete(self, document: dict):
         await self.mongo_collection.delete_one(document)
 
+    async def count(self, document: dict):
+        return await self.mongo_collection.count_documents(document)
+
 
 def get_mongo_repo(collection: str, client: AsyncIOMotorClient = get_mongo_client()):
     return MongoBeanieRepository(client=client, collection=collection)

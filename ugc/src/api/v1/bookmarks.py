@@ -18,12 +18,12 @@ router = Blueprint("bookmark", __name__, url_prefix="/ugc")
 @check_access_token
 async def post_bookmark(
         user_info: dict = None,
-        review_service: BookmarkService = Depends(get_bookmark_service),
+        bookmark_service: BookmarkService = Depends(get_bookmark_service),
 ):
     request_data: dict = request.args.to_dict()
     request_data["user_id"] = user_info.get("sub")
     review: Document = collections.Bookmark(**request_data)
-    await review_service.save_bookmark(
+    await bookmark_service.save_bookmark(
         document=review.dict(),
     )
     return jsonify({"message": "Successful writing"}), HTTPStatus.OK
@@ -34,12 +34,28 @@ async def post_bookmark(
 @check_access_token
 async def delete_bookmark(
         user_info: dict = None,
-        review_service: BookmarkService = Depends(get_bookmark_service),
+        bookmark_service: BookmarkService = Depends(get_bookmark_service),
 ):
     request_data: dict = request.args.to_dict()
     request_data["user_id"] = user_info.get("sub")
     review: Document = collections.Bookmark(**request_data)
-    await review_service.delete_bookmark(
+    await bookmark_service.delete_bookmark(
         document=review.dict(),
     )
     return jsonify({"message": "Successful deleting"}), HTTPStatus.OK
+
+
+@router.route("/bookmark", methods=["GET"])
+@inject
+@check_access_token
+async def get_bookmark(
+        user_info: dict = None,
+        bookmark_service: BookmarkService = Depends(get_bookmark_service),
+):
+    request_data: dict = request.args.to_dict()
+    response = await bookmark_service.get_bookmarks(
+        document={"user_id": str(user_info.get("sub")), "is_delete": False},
+        pagination_settings=request_data,
+    )
+
+    return Response(response.model_dump_json(), mimetype="application/json")
