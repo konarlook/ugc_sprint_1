@@ -10,3 +10,13 @@ class TokenException(HTTPException):
 class ForbiddenException(HTTPException):
     code = HTTPStatus.FORBIDDEN
     description = "Insufficient privileges to use this function."
+
+
+class EntityExistException(HTTPException):
+    code = HTTPStatus.CONFLICT
+    description = "Entiry already exist."
+
+
+class EntityNotExistException(HTTPException):
+    code = HTTPStatus.CONFLICT
+    description = "Entiry isn't exist."
