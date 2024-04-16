@@ -5,6 +5,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 from api.v1.events import routers as event_routers
 from api.v1.feedback import router as feedback_routers
+from api.v1.bookmarks import router as bookmark_routers
 from helpers.kafka_init import get_kafka_init, KafkaInit
 from helpers.mongo_init import get_mongodb_init, MongoDBInit
 
@@ -36,6 +37,7 @@ def create_app():
     flask_application.register_blueprint(swagger_blueprint)
     flask_application.register_blueprint(event_routers)
     flask_application.register_blueprint(feedback_routers)
+    flask_application.register_blueprint(bookmark_routers)
 
     init_kafka()
 
