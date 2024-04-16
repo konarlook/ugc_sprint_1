@@ -3,7 +3,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from db.mongo import get_mongo_client
 from helpers import logger
-from models.mongo.collections import Review, ReviewRating, Bookmark
+from models.mongo.collections import Review, Evaluation, Bookmark
 
 mongo_logger = logger.UGCLogger()
 
@@ -14,7 +14,7 @@ class MongoDBInit:
 
     async def create_collections(self):
         await init_beanie(
-            database=self.client.ugc, document_models=[Review, ReviewRating, Bookmark]
+            database=self.client.ugc, document_models=[Review, Evaluation, Bookmark]
         )
 
 
