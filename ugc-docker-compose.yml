@@ -62,6 +62,8 @@ services:
     hostname: kafka_ugc
     ports:
       - "9094:9094"
+    depends_on:
+      - nginx
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -82,6 +84,8 @@ services:
     image: bitnami/kafka:3.4
     ports:
       - "9095:9095"
+    depends_on:
+      - nginx
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - ALLOW_PLAINTEXT_LISTENER=yes
@@ -102,6 +106,8 @@ services:
     image: bitnami/kafka:3.4
     ports:
       - "9096:9096"
+    depends_on:
+      - nginx
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - ALLOW_PLAINTEXT_LISTENER=yes
@@ -132,11 +138,13 @@ services:
     container_name: ugc_service
     build: ./ugc
     env_file: .env
+    volumes:
+      - ./src/logs/:/code/logs/
     networks:
-     - kafka_network
-     - mongo_network
-    ports:
-      - "5001:5001"
+      - kafka_network
+      - mongo_network
+    # ports:
+    #   - "5001:5001"
     depends_on:
       mongos1:
         condition: service_started
@@ -278,6 +286,67 @@ services:
         condition: service_completed_successfully
       mongos1:
         condition: service_started
+
+  logstash:
+    image: logstash:8.10.2
+    depends_on:
+      - elasticsearch
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
+      ES_HOST: "elasticsearch:9200"
+    ports:
+      - "5044:5044/udp"
+    volumes:
+      - ./ugc/deploy/logstash.conf:/config/logstash.conf:ro
+    command: logstash -f /config/logstash.conf
+
+  elasticsearch:
+    image: elasticsearch:8.10.2
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - 9200:9200
+    volumes:
+      - ./ugc/deploy/esdata:/tmp/elasticsearch/data
+    mem_limit: 4G
+
+  kibana:
+    image: kibana:8.10.2
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+
+  nginx:
+    image: nginx:1.19.2
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - /tmp/logs/nginx/:/var/log/nginx/
+    depends_on:
+      - ugc-service
+    networks:
+      - kafka_network
+      - mongo_network
+    ports:
+      - 80:80
+
+  filebeat:
+    build:
+      context: ./ugc/filebeat
+    container_name: filebeat
+    volumes:
+      - ./src/logs/:/src/logs
+      - /tmp/logs/nginx:/var/log/nginx:ro
+    depends_on:
+      - elasticsearch
+      - kibana
+      - nginx
+      - logstash
+      - ugc-service
 
 volumes:
   kafka_0_data:

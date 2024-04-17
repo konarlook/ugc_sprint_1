@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from pydantic import Field, KafkaDsn, MongoDsn
 from pydantic_settings import BaseSettings
 
