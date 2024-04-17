@@ -20,9 +20,9 @@ async def post_bookmark(
 ):
     request_data: dict = request.args.to_dict()
     request_data["user_id"] = user_info.get("sub")
-    review: Document = collections.Bookmark(**request_data)
-    await bookmark_service.save_bookmark(
-        document=review.dict(),
+    bookmark: Document = collections.Bookmark(**request_data)
+    await bookmark_service.save_object(
+        document=bookmark.dict(),
     )
     return jsonify({"message": "Successful writing"}), HTTPStatus.OK
 
@@ -36,9 +36,9 @@ async def delete_bookmark(
 ):
     request_data: dict = request.args.to_dict()
     request_data["user_id"] = user_info.get("sub")
-    review: Document = collections.Bookmark(**request_data)
-    await bookmark_service.delete_bookmark(
-        document=review.dict(),
+    bookmark: Document = collections.Bookmark(**request_data)
+    await bookmark_service.delete_object(
+        document=bookmark.dict(),
     )
     return jsonify({"message": "Successful deleting"}), HTTPStatus.OK
 

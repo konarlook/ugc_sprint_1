@@ -38,8 +38,24 @@ async def post_evaluation(
     except ValidationError:
         raise exceptions.ValidationException
 
-    await evaluation_service.create(document=evaluation.dict())
+    await evaluation_service.save_object(document=evaluation.dict())
     return jsonify({"message": "Successful writing"}), HTTPStatus.OK
+
+
+@router.route("/evaluation", methods=["DELETE"])
+@inject
+@check_access_token
+async def delete_evaluation(
+    user_info: dict = None,
+    evaluation_service: EvaluationService = Depends(get_evaluation_service),
+):
+    request_data: dict = request.args.to_dict()
+    request_data["user_info"] = user_info.get("sub")
+    evaluation: Document = collections.Evaluation(**request_data)
+    await evaluation_service.delete_object(
+        document=evaluation.dict(),
+    )
+    return jsonify({"message": "Successful deleting"}), HTTPStatus.OK
 
 
 @router.route("/evaluation", methods=["GET"])
@@ -51,8 +67,8 @@ async def get_evaluations(
 ):
     request_data = request.args.to_dict()
     request_data["user_info"] = user_info.get("sub")
-    response = await evaluation_service.get_evaluations(
-        document={"review_id": request_data.get("review_id")},
+    response = await evaluation_service.get_with_pagination(
+        document={"review_id": request_data.get("review_id"), "is_delete": False},
         pagination_settings=request_data,
     )
     return Response(response.model_dump_json(), mimetype="application/json")
