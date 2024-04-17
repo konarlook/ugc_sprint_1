@@ -80,7 +80,6 @@ services:
     volumes:
       - kafka_0_data:/bitnami/kafka
 
-
   kafka-1:
     image: bitnami/kafka:3.4
     ports:
@@ -153,7 +152,7 @@ services:
         condition: service_completed_successfully
 
   kafka-ch-etl:
-    build: ./ugc/etl
+    build: ./ugc/etl_kafka_click
     container_name: kafka-ch-etl
     networks:
       - kafka_network
@@ -163,6 +162,20 @@ services:
       - kafka-0
       - kafka-1
       - kafka-2
+
+  mongo-ch-etl:
+    build: ./ugc/etl_mongo_click
+    container_name: mongo-ch-etl
+    networks:
+      - mongo_network
+      - kafka_network
+    env_file:
+      - .env
+    depends_on:
+      setup_mongo_router_serv:
+        condition: service_completed_successfully
+      clickhouse-init:
+        condition: service_completed_successfully
 
   mongors1n1:
     container_name: mongors1n1

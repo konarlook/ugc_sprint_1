@@ -4,7 +4,7 @@ services:
   postgres_auth:
     container_name: postgres_auth
     image: postgres:${POSTGRES_AUTH_VERSION}
-    hostname: postgres_auth
+    hostname: postgres_auth 
     restart: always
     env_file: .env
     environment:
