@@ -1,13 +1,12 @@
 from http import HTTPStatus
 
-from flask import Blueprint, request, jsonify
-
 from core.constants import TopicNames
+from flask import Blueprint, jsonify, request
 from helpers.access import check_access_token
 from models.click import ClickEvent
-from models.player import PlayerProgress, EventsNames, PlayerSettingEvents
-from services.click_event import get_click_service, ClickService
-from services.player_events import get_player_service, PlayerService
+from models.player import EventsNames, PlayerProgress, PlayerSettingEvents
+from services.click_event import ClickService, get_click_service
+from services.player_events import PlayerService, get_player_service
 
 routers = Blueprint("ugc", __name__, url_prefix="/ugc")
 
