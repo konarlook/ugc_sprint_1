@@ -15,7 +15,6 @@ def convert_document_to_modeldata(document, colection_name):
     try:
         model_data = model_data_schema(**document)
     except Exception as e:
-        print(e)
         logging.error(f'{e.__class__.__name__}:\n{str(e)=}')
         return None
 
@@ -99,7 +98,6 @@ def etl_data():
                             last_update_db = chunk[-1].dt
                             last_tables_updates_dt[ch_table_name] = last_update_db
                         except Exception as e:
-                            print(e)
                             logging.error(f'{e.__class__.__name__}:\n{str(e)=}')
 
             sleep(5)
