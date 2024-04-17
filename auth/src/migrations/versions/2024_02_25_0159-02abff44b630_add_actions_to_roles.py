@@ -72,11 +72,6 @@ def upgrade() -> None:
             {
                 "id": uuid.uuid4(),
                 "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
-                "action_id": "7721cecf-4b47-40ac-bb03-5edae32f8ae3",
-            },
-            {
-                "id": uuid.uuid4(),
-                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
                 "action_id": "71794196-4df4-4277-82cb-0b2fa17ca60a",
             },
             {
@@ -108,6 +103,11 @@ def upgrade() -> None:
                 "id": uuid.uuid4(),
                 "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
                 "action_id": "3d1ebb54-f05d-4ad1-926c-a4548e1887b4",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "027c5ea6-cd1b-47d4-b87e-66c246fd26ca",
             },
             {
                 "id": uuid.uuid4(),
@@ -202,11 +202,6 @@ def upgrade() -> None:
             {
                 "id": uuid.uuid4(),
                 "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
-                "action_id": "7721cecf-4b47-40ac-bb03-5edae32f8ae3",
-            },
-            {
-                "id": uuid.uuid4(),
-                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
                 "action_id": "71794196-4df4-4277-82cb-0b2fa17ca60a",
             },
             {
@@ -238,6 +233,11 @@ def upgrade() -> None:
                 "id": uuid.uuid4(),
                 "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
                 "action_id": "3d1ebb54-f05d-4ad1-926c-a4548e1887b4",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "027c5ea6-cd1b-47d4-b87e-66c246fd26ca",
             },
         ],
     )

@@ -1,4 +1,3 @@
-import json
 from http import HTTPStatus
 
 from beanie import Document
@@ -48,7 +47,7 @@ async def get_reviews(
         document={"movie_id": str(request_data["movie_id"]), "is_delete": False},
         pagination_settings=request_data,
     )
-    return Response(json.dumps(response, default=str), mimetype="application/json")
+    return Response(response.model_dump_json(), mimetype="application/json")
 
 
 @router.route("/review_admin", methods=["DELETE"])
