@@ -63,12 +63,12 @@ def create_tables_for_first_node():
     # create review
     client.execute(
         "CREATE TABLE IF NOT EXISTS shard_db.reviews "
-        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "(id UUID, user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
         "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/reviews', 'replica_1') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
     client.execute(
         "CREATE TABLE IF NOT EXISTS replica_db.reviews "
-        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "(id UUID, user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
         "ENGINE = Distributed('ugc_cluster', '', reviews, rand());")
 
     # create review_rating
@@ -135,7 +135,7 @@ def create_tables_for_second_node():
     # create review table
     client.execute(
         "CREATE TABLE IF NOT EXISTS replica_db.reviews "
-        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "(id UUID, user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
         "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/reviews', 'replica_2') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
@@ -194,7 +194,7 @@ def create_tables_for_third_node():
     # create review table
     client.execute(
         "CREATE TABLE IF NOT EXISTS replica_db.reviews "
-        "(user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
+        "(id UUID, user_id UUID, movie_id UUID, score Int8, text LONGTEXT, is_delete Bool, event_dt DateTime) "
         "Engine=ReplicatedMergeTree('/clickhouse/tables/shard1/reviews', 'replica_3') "
         "PARTITION BY toYYYYMMDD(event_dt) ORDER BY event_dt;")
 
