@@ -61,6 +61,56 @@ def upgrade() -> None:
             },
             {
                 "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "9641c240-5313-4a49-bb5a-d984eb4678cf",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "e7b1797b-07f1-4b10-8bf6-85c3cfa2dfd0",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "7721cecf-4b47-40ac-bb03-5edae32f8ae3",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "71794196-4df4-4277-82cb-0b2fa17ca60a",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "a56cd0fd-5af8-4fd5-beda-7c7fc9677a18",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "4038c06c-1ef2-411d-bc66-601a3065d38f",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "d7dbf6ad-3c6f-444e-bd38-eb37fd50d642",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "17d6f467-3b59-49eb-bd93-499c69605bb4",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "8995a319-d3b9-46aa-878f-c21d816e4923",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "d91454c4-a706-4d88-8b94-e843ff5021cb",
+                "action_id": "3d1ebb54-f05d-4ad1-926c-a4548e1887b4",
+            },
+            {
+                "id": uuid.uuid4(),
                 "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
                 "action_id": "bb29bca0-a549-4aa7-b75e-39d4ebf648a9",
             },
@@ -138,6 +188,56 @@ def upgrade() -> None:
                 "id": uuid.uuid4(),
                 "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
                 "action_id": "5213525f-b40e-43d5-8252-817987854ccf",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "9641c240-5313-4a49-bb5a-d984eb4678cf",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "e7b1797b-07f1-4b10-8bf6-85c3cfa2dfd0",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "7721cecf-4b47-40ac-bb03-5edae32f8ae3",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "71794196-4df4-4277-82cb-0b2fa17ca60a",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "a56cd0fd-5af8-4fd5-beda-7c7fc9677a18",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "4038c06c-1ef2-411d-bc66-601a3065d38f",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "d7dbf6ad-3c6f-444e-bd38-eb37fd50d642",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "17d6f467-3b59-49eb-bd93-499c69605bb4",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "8995a319-d3b9-46aa-878f-c21d816e4923",
+            },
+            {
+                "id": uuid.uuid4(),
+                "role_id": "25c245c4-1a06-42c7-bb55-0261a2f743d6",
+                "action_id": "3d1ebb54-f05d-4ad1-926c-a4548e1887b4",
             },
         ],
     )
