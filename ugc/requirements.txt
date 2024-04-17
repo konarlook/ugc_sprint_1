@@ -20,4 +20,4 @@ beanie==1.25.0
 
 sentry-sdk[flask]
 python-logstash==0.4.8
-python-dotenv==0.19.1
+python-dotenv==0.21.0
