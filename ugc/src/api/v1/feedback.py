@@ -2,9 +2,11 @@ import json
 from http import HTTPStatus
 
 from beanie import Document
+from pydantic import ValidationError
 from flask import Blueprint, request, jsonify, Response
 from fast_depends import inject, Depends
 
+from core import exceptions
 from helpers.access import check_access_token
 from models.mongo import collections
 from services.feedback.review import ReviewService, get_review_service
@@ -22,7 +24,10 @@ async def post_review(
     """API for post user review on film-work."""
     request_data: dict = request.args.to_dict()
     request_data["user_id"] = user_info.get("sub")
-    review: Document = collections.Review(**request_data)
+    try:
+        review: Document = collections.Review(**request_data)
+    except ValidationError:
+        raise exceptions.ValidationException
     await review_service.create(
         document=review.dict(),
     )

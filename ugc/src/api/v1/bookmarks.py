@@ -1,4 +1,3 @@
-import json
 from http import HTTPStatus
 
 from beanie import Document
@@ -7,8 +6,7 @@ from fast_depends import inject, Depends
 
 from helpers.access import check_access_token
 from models.mongo import collections
-from services.bookmarks import get_bookmark_service, BookmarkService
-from services.feedback.review import ReviewService, get_review_service
+from services.feedback.bookmarks import get_bookmark_service, BookmarkService
 
 router = Blueprint("bookmark", __name__, url_prefix="/ugc")
 
@@ -17,14 +15,14 @@ router = Blueprint("bookmark", __name__, url_prefix="/ugc")
 @inject
 @check_access_token
 async def post_bookmark(
-        user_info: dict = None,
-        bookmark_service: BookmarkService = Depends(get_bookmark_service),
+    user_info: dict = None,
+    bookmark_service: BookmarkService = Depends(get_bookmark_service),
 ):
     request_data: dict = request.args.to_dict()
     request_data["user_id"] = user_info.get("sub")
-    review: Document = collections.Bookmark(**request_data)
-    await bookmark_service.save_bookmark(
-        document=review.dict(),
+    bookmark: Document = collections.Bookmark(**request_data)
+    await bookmark_service.save_object(
+        document=bookmark.dict(),
     )
     return jsonify({"message": "Successful writing"}), HTTPStatus.OK
 
@@ -33,14 +31,14 @@ async def post_bookmark(
 @inject
 @check_access_token
 async def delete_bookmark(
-        user_info: dict = None,
-        bookmark_service: BookmarkService = Depends(get_bookmark_service),
+    user_info: dict = None,
+    bookmark_service: BookmarkService = Depends(get_bookmark_service),
 ):
     request_data: dict = request.args.to_dict()
     request_data["user_id"] = user_info.get("sub")
-    review: Document = collections.Bookmark(**request_data)
-    await bookmark_service.delete_bookmark(
-        document=review.dict(),
+    bookmark: Document = collections.Bookmark(**request_data)
+    await bookmark_service.delete_object(
+        document=bookmark.dict(),
     )
     return jsonify({"message": "Successful deleting"}), HTTPStatus.OK
 
@@ -49,11 +47,11 @@ async def delete_bookmark(
 @inject
 @check_access_token
 async def get_bookmark(
-        user_info: dict = None,
-        bookmark_service: BookmarkService = Depends(get_bookmark_service),
+    user_info: dict = None,
+    bookmark_service: BookmarkService = Depends(get_bookmark_service),
 ):
     request_data: dict = request.args.to_dict()
-    response = await bookmark_service.get_bookmarks(
+    response = await bookmark_service.get_with_pagination(
         document={"user_id": str(user_info.get("sub")), "is_delete": False},
         pagination_settings=request_data,
     )
