@@ -10,7 +10,6 @@ class Review(BaseModel):
     movie_id: UUID = Field(comment="Идентификатор фильма")
     score: int = Field(comment="Полезность отзыва")
     text: str = Field(comment="Тест отзыва")
-    evaluation_sum: int = (Field(comment="Полезность отзыва"))
 
     is_delete: bool = Field(comment="Пометка об удалении")
     dt: datetime = Field(comment='Дата события', alias='event_dt', validation_alias='dt')
@@ -70,7 +69,6 @@ class ReviewRating(BaseModel):
                 fields_names.append(basic_field_name)
 
         return fields_names
-
 
 
 # class Review(BaseModel):
