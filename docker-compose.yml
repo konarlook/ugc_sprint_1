@@ -4,9 +4,11 @@ services:
   postgres_auth:
     container_name: postgres_auth
     image: postgres:${POSTGRES_AUTH_VERSION}
-    hostname: postgres_auth 
+    hostname: postgres_auth
     restart: always
     env_file: .env
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: ${AUTH_DB_NAME}
       POSTGRES_USER: ${AUTH_DB_USER}

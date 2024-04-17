@@ -3,6 +3,13 @@ from datetime import datetime
 from schemas.base import BaseSchema
 
 
+class ReviewSchema(BaseSchema):
+    user_id: UUID
+    score: int
+    text: str
+    dt: datetime
+
+
 class BookmarkResponse(BaseSchema):
     user_id: UUID
     movie_id: UUID

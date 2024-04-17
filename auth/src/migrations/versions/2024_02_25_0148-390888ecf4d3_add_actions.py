@@ -129,6 +129,56 @@ def upgrade() -> None:
                 "action_name": "post_player_progress",
                 "comment": "Запись прогресса плеера",
             },
+            {
+                "id": "9641c240-5313-4a49-bb5a-d984eb4678cf",
+                "action_name": "post_bookmark",
+                "comment": "post_bookmark",
+            },
+            {
+                "id": "e7b1797b-07f1-4b10-8bf6-85c3cfa2dfd0",
+                "action_name": "delete_bookmark",
+                "comment": "delete_bookmark",
+            },
+            {
+                "id": "71794196-4df4-4277-82cb-0b2fa17ca60a",
+                "action_name": "get_bookmark",
+                "comment": "get_bookmark",
+            },
+            {
+                "id": "a56cd0fd-5af8-4fd5-beda-7c7fc9677a18",
+                "action_name": "post_evaluation",
+                "comment": "post_evaluation",
+            },
+            {
+                "id": "4038c06c-1ef2-411d-bc66-601a3065d38f",
+                "action_name": "delete_evaluation",
+                "comment": "delete_evaluation",
+            },
+            {
+                "id": "d7dbf6ad-3c6f-444e-bd38-eb37fd50d642",
+                "action_name": "get_evaluations",
+                "comment": "get_evaluations",
+            },
+            {
+                "id": "17d6f467-3b59-49eb-bd93-499c69605bb4",
+                "action_name": "post_review",
+                "comment": "post_review",
+            },
+            {
+                "id": "8995a319-d3b9-46aa-878f-c21d816e4923",
+                "action_name": "get_reviews",
+                "comment": "get_reviews",
+            },
+            {
+                "id": "3d1ebb54-f05d-4ad1-926c-a4548e1887b4",
+                "action_name": "admin_delete_review",
+                "comment": "admin_delete_review",
+            },
+            {
+                "id": "027c5ea6-cd1b-47d4-b87e-66c246fd26ca",
+                "action_name": "delete_review",
+                "comment": "delete_review",
+            },
         ],
     )
     # ### end Alembic commands ###

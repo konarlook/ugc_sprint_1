@@ -1,4 +1,3 @@
-import json
 from http import HTTPStatus
 
 from beanie import Document
@@ -44,21 +43,11 @@ async def get_reviews(
     """API for getting all reviews on film-work."""
     request_data: dict = request.args.to_dict()
 
-    if "page_size" not in request_data:
-        page_size = 50
-    else:
-        page_size = request_data["page_size"]
-    if "page_number" not in request_data:
-        page_number = 1
-    else:
-        page_number = request_data["page_number"]
-
-    response = await review_service.read(
-        document={"movie_id": str(request_data["movie_id"])},
-        skip=(page_number - 1) * page_size,
-        limit=page_size,
+    response = await review_service.get_with_pagination(
+        document={"movie_id": str(request_data["movie_id"]), "is_delete": False},
+        pagination_settings=request_data,
     )
-    return Response(json.dumps(response, default=str), mimetype="application/json")
+    return Response(response.model_dump_json(), mimetype="application/json")
 
 
 @router.route("/review_admin", methods=["DELETE"])
