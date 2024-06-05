@@ -30,13 +30,12 @@ services:
 
   redis_auth:
     container_name: redis_auth
-    hostname: redis_auth
+    hostname: ${AUTH_REDIS_HOST}
     image: redis:latest
     env_file: .env
     restart: always
     volumes:
-      - /redis_auth/dаta:/root/redis
-      - /redis_auth/redis.conf:/usr/local/etc/redis/redis.conf
+      - redis_auth_vol:/data
     environment:
       REDIS_PASSWORD: ${AUTH_REDIS_PASSWORD}
       REDIS_PORT: ${AUTH_REDIS_PORT}
@@ -46,6 +45,32 @@ services:
     depends_on:
       - postgres_auth
       - auth
+
+  redis_subscription:
+    container_name: redis_subscription
+    hostname: ${SUBSCRIPTION_REDIS_HOST}
+    image: redis:latest
+    env_file: .env
+    restart: always
+    volumes:
+      - redis_subscription_vol:/data
+    environment:
+      REDIS_PASSWORD: ${SUBSCRIPTION_REDIS_PASSWORD}
+      REDIS_PORT: ${SUBSCRIPTION_REDIS_PORT}
+      REDIS_DATABASES: ${SUBSCRIPTION_REDIS_DATABASES}
+    networks:
+      - auth_network
+
+  redis_subscription_init:
+    container_name: redis_subscription_init
+    build: sub_redis_init
+    env_file: .env
+    depends_on:
+      - redis_subscription
+    links:
+      - redis_subscription
+    networks:
+     - auth_network
 
   db:
     container_name: postgres
@@ -168,6 +193,8 @@ volumes:
   kafka_0_data:
   kafka_1_data:
   kafka_2_data:
+  redis_auth_vol:
+  redis_subscription_vol:
 
 networks:
   network_project:
