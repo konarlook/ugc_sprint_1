@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, status, Response, Cookie, Request, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi import APIRouter, Depends, status, Response, Cookie, Request, HTTPException, Body
+from fastapi.responses import RedirectResponse, ORJSONResponse
 from fastapi_limiter.depends import RateLimiter
 from redis.asyncio import Redis
 
 from core.config import settings
 from core.constants import UserRoleEnum
-from db.redis import get_redis
+from db.redis import get_redis, get_sub_redis
 from helpers import access
 from helpers.providers import Providers
 from helpers.random import get_random_string
@@ -304,3 +304,57 @@ async def history(
     user_info = await auth_service.decode_jwt(access_token)
     list_history = await history_service.get(user_info["sub"], history_data)
     return list_history
+
+
+@router.post(
+    path="/save_subscription",
+    status_code=status.HTTP_200_OK,
+    summary="Сохранения данных о подписке пользователя",
+    description="Сохранения данных о подписке пользователя в Redis",
+    dependencies=[Depends(RateLimiter(times=2, seconds=5))],
+)
+@access.check_access_token
+async def save_subscription(
+    response: ORJSONResponse,
+    access_token: str | None = Cookie(None),
+    sub_redis: Redis = Depends(get_sub_redis),
+    user_id: str = Body(alias='user_id'),
+    subscriprion_id: str = Body(alias='subscriprion_id'),
+    time: int = Body(alias='time'),
+) -> dict:
+    """Save user subscription info."""
+
+    operation_status = await sub_redis.set(user_id, subscriprion_id, ex=time)
+
+    if operation_status is True:
+        return {"detail": "user subscription data saves"}
+
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return {"detail": "user subscription not saved"}
+
+
+@router.delete(
+    path="/delete_subscription",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Удаление данных о подписке пользователя",
+    description="Удаление данных о подписке пользователя в Redis",
+    dependencies=[Depends(RateLimiter(times=2, seconds=5))],
+)
+@access.check_access_token
+async def delete_subscription(
+    response: ORJSONResponse,
+    access_token: str | None = Cookie(None),
+    sub_redis: Redis = Depends(get_sub_redis),
+    user_id: str = Body(alias='user_id'),
+) -> dict:
+    """Delete user subscription info."""
+
+    operation_status = await sub_redis.delete(user_id)
+
+    if operation_status == 1:
+        return {"detail": "user subscription data deleted"}
+    elif operation_status == 0:
+        return {"detail": "user subscription data not found"}
+
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return {"detail": "user subscription not deleted"}

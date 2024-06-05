@@ -99,6 +99,23 @@ class RedisSettings(_BaseSettings):
         description="Время хранения токенов",
     )
 
+    sub_redis_host: str = Field(
+        default="redis_subscription",
+        description="Адрес хоста Redis для хранения данных о подписках",
+    )
+    sub_redis_port: int = Field(
+        default=6379,
+        description="Порт Redis для хранения данных о подписках",
+    )
+    sub_redis_database: str = Field(
+        default="0",
+        description="База данных Redis для хранения данных о подписках",
+    )
+    sub_redis_password: str = Field(
+        default="sub_pass",
+        description="Пароль от Redis",
+    )
+
 
 class PaginationSettings(_BaseSettings):
     """Base project settings related to pagination parameters."""
